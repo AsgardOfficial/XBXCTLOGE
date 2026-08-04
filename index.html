@@ -1,0 +1,3545 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>کاتالوگ بازی‌های Xbox با فیلتر شیشه‌ای</title>
+    <style>
+        :root {
+            --bg-color: #0b0f0c;
+            --card-bg: rgba(20, 29, 22, 0.85);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-main: #f0f6fc;
+            --text-muted: #9eb2a3;
+            --accent: #107c41;
+            --accent-bright: #107c10;
+            --accent-glow: rgba(16, 124, 65, 0.4);
+        }
+
+        body {
+            font-family: Segoe UI, Tahoma, sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 50% 0%, #132418 0%, #0b0f0c 75%);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: var(--accent-bright);
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        /* بخش جستجو و فیلترها */
+        .controls-wrapper {
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: rgba(11, 15, 12, 0.8);
+            color: #fff;
+            outline: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .search-box:focus {
+            border-color: var(--accent-bright);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        /* استایل کلیدهای شیشه‌ای فیلتر ژانر */
+        .glass-filter-section {
+            background: rgba(20, 29, 22, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 16px;
+        }
+
+        .filter-title {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .glass-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 8px 16px;
+            border-radius: 30px;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-size: 0.85rem;
+            font-family: Segoe UI, Tahoma, sans-serif;
+        }
+
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .glass-btn.active {
+            background: rgba(16, 124, 65, 0.3);
+            border-color: var(--accent-bright);
+            color: #5cf272;
+            box-shadow: 0 0 12px var(--accent-glow);
+            font-weight: bold;
+        }
+
+        /* گرید کاتالوگ بازی‌ها */
+        .grid-catalog {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 var(--accent-glow);
+            border-color: rgba(16, 124, 65, 0.6);
+        }
+
+        .game-cover {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-color);
+            background-color: #141d16;
+        }
+
+        .game-content {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .game-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 0 0 8px 0;
+            color: #fff;
+        }
+
+        .game-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            line-height: 1.4;
+            flex-grow: 1;
+        }
+
+        .game-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px 12px;
+            font-size: 0.8rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .game-details span {
+            color: var(--text-main);
+        }
+
+        .game-details .genre-item {
+            color: #5cf272;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .trailer-btn {
+            display: block;
+            text-align: center;
+            background-color: var(--accent);
+            color: white;
+            text-decoration: none;
+            padding: 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+
+        .trailer-btn:hover {
+            background-color: var(--accent-bright);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>کاتالوگ بازی‌های اکس‌باکس</h1>
+            <p style="color: var(--text-muted);">جستجوی هوشمند و فیلتر شیشه‌ای ژانرها</p>
+        </header>
+
+        <div class="controls-wrapper">
+            <!-- کادر جستجو -->
+            <input type="text" id="searchBox" class="search-box" placeholder="جستجوی نام بازی..." onkeyup="filterCatalog()">
+
+            <!-- کلیدهای شیشه‌ای فیلتر ژانر -->
+            <div class="glass-filter-section">
+                <div class="filter-title">
+                    <span>فیلتر بر اساس ژانر (انتخاب هم‌زمان تا ۴ مورد)</span>
+                    <span id="filter-counter">انتخاب‌شده: ۰</span>
+                </div>
+                <div class="glass-buttons">
+                    <button class="glass-btn" data-filter="اکشن" onclick="toggleFilter(this)">اکشن</button>
+                    <button class="glass-btn" data-filter="جهان‌باز" onclick="toggleFilter(this)">جهان‌باز</button>
+                    <button class="glass-btn" data-filter="بقا" onclick="toggleFilter(this)">بقا</button>
+                    <button class="glass-btn" data-filter="رول‌پلی" onclick="toggleFilter(this)">RPG / نقش‌آفرینی</button>
+                    <button class="glass-btn" data-filter="ترسناک" onclick="toggleFilter(this)">ترسناک</button>
+                    <button class="glass-btn" data-filter="ورزشی" onclick="toggleFilter(this)">ورزشی</button>
+                    <button class="glass-btn" data-filter="سینمایی" onclick="toggleFilter(this)">سینمایی</button>
+                    <button class="glass-btn" data-filter="کوآپ" onclick="toggleFilter(this)">کوآپ / دونفره</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-catalog" id="gameGrid">
+            
+            <!-- 7 Days To Die -->
+            <div class="game-card" data-name="7 days to die" data-filters="بقا اکشن">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/251570/header.jpg" alt="7 Days To Die" class="game-cover">
+                <div class="game-content">
+                    <h3 class="game-title">7 Days To Die</h3>
+                    <p class="game-desc">ترکیبی از بقا، تیراندازی و دفاع در برابر زامبی‌ها در دنیایی آخرالزمانی.</p>
+                    <div class="game-details">
+                        <div>رده سنی: <span>+18</span></div>
+                        <div>زمان: <span>۶۰ ساعت</span></div>
+                        <div>حجم: <span>۳۵ گیگ</span></div>
+                        <div class="genre-item">ژانر: <span>بقا / اکشن</span></div>
+                    </div>
+                    <a href="https://www.youtube.com/results?search_query=7+Days+To+Die+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+                </div>
+            </div>
+<!-- A Way Out -->
+<div class="game-card" data-name="a way out" data-filters="اکشن سینمایی کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1222700/header.jpg" alt="A Way Out" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">A Way Out</h3>
+        <p class="game-desc">تجربه‌ای تماماً کوآپ و دو‌نفره درباره فرار دو زندانی از زندان و ماجراجویی مشترک آن‌ها.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۶ ساعت</span></div>
+            <div>حجم: <span>۲۲ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>کوآپ / سینمایی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=A+Way+Out+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Ace Combat 7: Skies Unknown -->
+<div class="game-card" data-name="ace combat 7 skies unknown" data-filters="اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/503560/header.jpg" alt="Ace Combat 7" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Ace Combat 7: Skies Unknown</h3>
+        <p class="game-desc">نبردهای هوایی هیجان‌انگیز و شبیه‌سازی پرواز با جنگنده‌های مدرن در آسمان.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۱۲ ساعت</span></div>
+            <div>حجم: <span>۳۶ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Ace+Combat+7+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Alan Wake 2 -->
+<div class="game-card" data-name="alan wake 2" data-filters="ترسناک سینمایی اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2001700/header.jpg" alt="Alan Wake 2" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Alan Wake 2</h3>
+        <p class="game-desc">یک شاهکار بقا و ترسناک روان‌شناختی با روایتی تاریک و سینمایی درباره کابوس‌های آلن و الن.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۲۰ ساعت</span></div>
+            <div>حجم: <span>۸۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ترسناک / سینمایی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Alan+Wake+2+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Alice: Madness Returns -->
+<div class="game-card" data-name="alice madness returns" data-filters="اکشن ترسناک">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/19680/header.jpg" alt="Alice Madness Returns" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Alice: Madness Returns</h3>
+        <p class="game-desc">ماجراجویی تاریک و سورئال آلیس در سرزمین عجایب گوتیک و فانتزی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۸ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / ترسناک</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Alice+Madness+Returns+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Alone in the Dark -->
+<div class="game-card" data-name="alone in the dark" data-filters="ترسناک اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1590940/header.jpg" alt="Alone in the Dark" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Alone in the Dark</h3>
+        <p class="game-desc">بازسازی کلاسیک ترسناک گوتیک در عمارت درستو همراه با معماها و هیولاهای ترسناک.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۰ ساعت</span></div>
+            <div>حجم: <span>۳۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ترسناک / اکشن</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Alone+in+the+Dark+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Amnesia: Rebirth -->
+<div class="game-card" data-name="amnesia rebirth" data-filters="ترسناک بقا">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/999220/header.jpg" alt="Amnesia Rebirth" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Amnesia: Rebirth</h3>
+        <p class="game-desc">سفری دردناک در دل تاریکی و وحشت در بیابان‌های الجزایر برای بقا.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۰ ساعت</span></div>
+            <div>حجم: <span>۳۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ترسناک / بقا</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Amnesia+Rebirth+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Anno 1800 -->
+<div class="game-card" data-name="anno 1800" data-filters="جهان‌باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/916440/header.jpg" alt="Anno 1800" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Anno 1800</h3>
+        <p class="game-desc">مدیریت و ساخت شهر در عصر انقلاب صنعتی و گسترش امپراتوری تجاری.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۵۰ ساعت</span></div>
+            <div>حجم: <span>۶۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>استراتژی / استراتژیک</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Anno+1800+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- AO Tennis 2 -->
+<div class="game-card" data-name="ao tennis 2" data-filters="ورزشی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1070500/header.jpg" alt="AO Tennis 2" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">AO Tennis 2</h3>
+        <p class="game-desc">شبیه‌ساز حرفه‌ای و دقیق مسابقات تنیس اپن استرالیا.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۲۰ ساعت</span></div>
+            <div>حجم: <span>۱۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ورزشی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=AO+Tennis+2+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Ark Survival Evolved -->
+<div class="game-card" data-name="ark survival evolved" data-filters="بقا جهان‌باز کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/346110/header.jpg" alt="Ark Survival Evolved" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Ark: Survival Evolved</h3>
+        <p class="game-desc">بقا در جزیره‌ای اسرارآمیز و رام کردن دایناسورها به همراه دوستان.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۱۰۰ ساعت</span></div>
+            <div>حجم: <span>۸۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>بقا / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Ark+Survival+Evolved+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Armored Core VI: Fires of Rubicon -->
+<div class="game-card" data-name="armored core vi fires of rubicon" data-filters="اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1888160/header.jpg" alt="Armored Core VI" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Armored Core VI: Fires of Rubicon</h3>
+        <p class="game-desc">نبردهای روباتی فوق‌العاده سریع و پرهیجان ساخت فرام‌سافت‌ور.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۲۵ ساعت</span></div>
+            <div>حجم: <span>۶۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Armored+Core+VI+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Army of Two -->
+<div class="game-card" data-name="army of two" data-filters="اکشن کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1222700/header.jpg" alt="Army of Two" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Army of Two</h3>
+        <p class="game-desc">تیراندازی سوم‌شخص حماسی با محوریت همکاری دو نفره و تاکتیک‌های نظامی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۸ ساعت</span></div>
+            <div>حجم: <span>۸ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / کوآپ</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Army+of+Two+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Batman: Arkham Asylum -->
+<div class="game-card" data-name="batman arkham asylum" data-filters="اکشن سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/35140/header.jpg" alt="Batman Arkham Asylum" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Batman: Arkham Asylum</h3>
+        <p class="game-desc">ماجراجویی بتمن در تیمارستان آرکام و مبارزه با جوکر و سایر شرورها.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۱۲ ساعت</span></div>
+            <div>حجم: <span>۱۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / سینمایی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Batman+Arkham+Asylum+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Batman: Arkham City -->
+<div class="game-card" data-name="batman arkham city" data-filters="اکشن جهان‌باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/200260/header.jpg" alt="Batman Arkham City" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Batman: Arkham City</h3>
+        <p class="game-desc">گشت و گذار در شهر آرکام آزادانه و نبرد با جرم و جنایت در ابعادی وسیع‌تر.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۱۸ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Batman+Arkham+City+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Assassin's Creed IV Black Flag -->
+<div class="game-card" data-name="assassin's creed iv black flag" data-filters="اکشن جهان‌باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/242050/header.jpg" alt="AC Black Flag" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Assassin's Creed IV Black Flag</h3>
+        <p class="game-desc">دزد دریایی شدن در کارائیب، نبردهای دریایی حماسی و کاوش در جزایر.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۲۵ ساعت</span></div>
+            <div>حجم: <span>۳۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=AC+Black+Flag+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Assassin's Creed Odyssey -->
+<div class="game-card" data-name="assassin's creed odyssey" data-filters="رول‌پلی جهان‌باز اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/812140/header.jpg" alt="AC Odyssey" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Assassin's Creed Odyssey</h3>
+        <p class="game-desc">سفری حماسی به یونان باستان در نقش یک مزدور اسپارتان.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۴۵ ساعت</span></div>
+            <div>حجم: <span>۷۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>RPG / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=AC+Odyssey+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Assassin's Creed Origins -->
+<div class="game-card" data-name="assassin's creed origins" data-filters="رول‌پلی جهان‌باز اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/582160/header.jpg" alt="AC Origins" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Assassin's Creed Origins</h3>
+        <p class="game-desc">کشف منشأ برادری اساسین‌ها در مصر باستان و مبارزات جدید.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۳۰ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>RPG / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=AC+Origins+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Assassin's Creed Syndicate -->
+<div class="game-card" data-name="assassin's creed syndicate" data-filters="اکشن جهان‌باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/368500/header.jpg" alt="AC Syndicate" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Assassin's Creed Syndicate</h3>
+        <p class="game-desc">ماجراجویی در لندن عصر ویکتوریا و هدایت باند خیابانی برای آزادی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۲۰ ساعت</span></div>
+            <div>حجم: <span>۴۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=AC+Syndicate+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Assassin's Creed Unity -->
+<div class="game-card" data-name="assassin's creed unity" data-filters="اکشن جهان‌باز کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/289650/header.jpg" alt="AC Unity" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Assassin's Creed Unity</h3>
+        <p class="game-desc">پارکور در پاریس در زمان انقلاب فرانسه به همراه مأموریت‌های کوآپ.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۷ ساعت</span></div>
+            <div>حجم: <span>۴۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / کوآپ</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=AC+Unity+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Assassin's Creed Valhalla -->
+<div class="game-card" data-name="assassin's creed valhalla" data-filters="رول‌پلی جهان‌باز اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2208920/header.jpg" alt="AC Valhalla" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Assassin's Creed Valhalla</h3>
+        <p class="game-desc">حمله وایکینگ‌ها به انگلستان و ساخت و توسعه‌ی مستعمره خود.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۶۰ ساعت</span></div>
+            <div>حجم: <span>۱۰۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>RPG / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=AC+Valhalla+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Assassin's Creed III Remastered -->
+<div class="game-card" data-name="assassin's creed iii remastered" data-filters="اکشن جهان‌باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/911400/header.jpg" alt="AC III Remastered" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Assassin's Creed III Remastered</h3>
+        <p class="game-desc">داستان کانر در میان جنگ انقلاب آمریکا با گرافیک بهینه‌شده.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۶ ساعت</span></div>
+            <div>حجم: <span>۴۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=AC+3+Remastered+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Assassin's Creed Mirage -->
+<div class="game-card" data-name="assassin's creed mirage" data-filters="اکشن جهان‌باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/242050/header.jpg" alt="AC Mirage" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Assassin's Creed Mirage</h3>
+        <p class="game-desc">بازگشت به ریشه‌های سری با محوریت مخفی‌کاری در بغداد قرن نهم.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۳۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / مخفی‌کاری</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=AC+Mirage+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Assassin's Creed Rogue Remastered -->
+<div class="game-card" data-name="assassin's creed rogue remastered" data-filters="اکشن جهان‌باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/311310/header.jpg" alt="AC Rogue" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Assassin's Creed Rogue Remastered</h3>
+        <p class="game-desc">تجربه داستان از نگاه یک تمپلار و شکار اساسین‌ها در آب‌های یخ‌زده.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۰ ساعت</span></div>
+            <div>حجم: <span>۲۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=AC+Rogue+Remastered+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Assassin's Creed Shadows -->
+<div class="game-card" data-name="assassin's creed shadows" data-filters="رول‌پلی جهان‌باز اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/812140/header.jpg" alt="AC Shadows" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Assassin's Creed Shadows</h3>
+        <p class="game-desc">ماجراجویی اساسین‌ها در ژاپن فئودال با دو شخصیت شینوبی و سامورایی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۴۰ ساعت</span></div>
+            <div>حجم: <span>۸۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>RPG / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=AC+Shadows+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Atomic Heart -->
+<div class="game-card" data-name="atomic heart" data-filters="اکشن رول‌پلی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/668580/header.jpg" alt="Atomic Heart" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Atomic Heart</h3>
+        <p class="game-desc">نبرد با ربات‌های سرکش در یک آرمان‌شهر شوروی آلترا-مدرن.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / شوتر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Atomic+Heart+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Atomfall -->
+<div class="game-card" data-name="atomfall" data-filters="بقا اکشن جهان‌باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1590940/header.jpg" alt="Atomfall" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Atomfall</h3>
+        <p class="game-desc">اکشن بقا پس از یک فاجعه هسته‌ای در بریتانیای مه‌آلود.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۲۰ ساعت</span></div>
+            <div>حجم: <span>۴۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>بقا / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Atomfall+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Avatar: Frontiers of Pandora -->
+<div class="game-card" data-name="avatar frontiers of pandora" data-filters="اکشن جهان‌باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2840770/header.jpg" alt="Avatar Frontiers of Pandora" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Avatar: Frontiers of Pandora</h3>
+        <p class="game-desc">کاوش در دنیای شگفت‌انگیز و گرافیکی پاندورا و مبارزه برای حفظ آن.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۲۵ ساعت</span></div>
+            <div>حجم: <span>۹۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Avatar+Frontiers+of+Pandora+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Avowed -->
+<div class="game-card" data-name="avowed" data-filters="رول‌پلی جهان‌باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2001700/header.jpg" alt="Avowed" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Avowed</h3>
+        <p class="game-desc">نقش‌آفرینی اول‌شخص جذاب در دنیای جادویی Living Lands ساخت استودیو ابسیدین.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۳۰ ساعت</span></div>
+            <div>حجم: <span>۷۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>RPG / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Avowed+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Baldur's Gate -->
+<div class="game-card" data-name="baldur's gate" data-filters="رول‌پلی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/228200/header.jpg" alt="Baldur's Gate" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Baldur's Gate</h3>
+        <p class="game-desc">نسخه کلاسیک و بازسازی‌شده از محبوب‌ترین نقش‌آفرینی‌های تاریخ D&D.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۴۵ ساعت</span></div>
+            <div>حجم: <span>۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>RPG</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Baldurs+Gate+Enhanced+Edition+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Baldur's Gate 3 -->
+<div class="game-card" data-name="baldur's gate 3" data-filters="رول‌پلی کوآپ جهان‌باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg" alt="Baldur's Gate 3" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Baldur's Gate 3</h3>
+        <p class="game-desc">شاهکار بی‌نظیر نقش‌آفرینی نوبتی با آزادی عمل بی‌حد و حصر و داستانی عمیق.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۰۰ ساعت</span></div>
+            <div>حجم: <span>۱۴۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>RPG / کوآپ</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Baldurs+Gate+3+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Banishers: Ghosts of New Eden -->
+<div class="game-card" data-name="banishers ghosts of new eden" data-filters="اکشن رول‌پلی سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1492660/header.jpg" alt="Banishers Ghosts of New Eden" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Banishers: Ghosts of New Eden</h3>
+        <p class="game-desc">داستان احساسی دو شکارچی ارواح و تصمیم‌های سخت در مواجهه با دنیای مردگان.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۲۵ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>RPG / اکشن</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Banishers+Ghosts+of+New+Eden+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Batman: Return to Arkham - Arkham Asylum -->
+<div class="game-card" data-name="batman return to arkham arkham asylum" data-filters="اکشن سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/35140/header.jpg" alt="Return to Arkham Asylum" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Batman: Return to Arkham - Arkham Asylum</h3>
+        <p class="game-desc">بازسازی باکیفیت و نوسازی شده‌ی اولین قسمت سری آرکام بتمن.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۱۲ ساعت</span></div>
+            <div>حجم: <span>۲۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / سینمایی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Return+to+Arkham+Asylum+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Batman: Return to Arkham - Arkham City -->
+<div class="game-card" data-name="batman return to arkham arkham city" data-filters="اکشن جهان‌باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/200260/header.jpg" alt="Return to Arkham City" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Batman: Return to Arkham - Arkham City</h3>
+        <p class="game-desc">نسخه بازسازی‌شده شاهکار آرکام سیتی با گرافیک ارتقا یافته.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۳۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Return+to+Arkham+City+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Batman: Arkham Knight -->
+<div class="game-card" data-name="batman arkham knight" data-filters="اکشن جهان‌باز سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/208650/header.jpg" alt="Batman Arkham Knight" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Batman: Arkham Knight</h3>
+        <p class="game-desc">پایان حماسی سه‌گانه آرکام با قابلیت رانندگی با بتموبیل در کل گاتهام.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۸ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Batman+Arkham+Knight+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Battlefield 1 -->
+<div class="game-card" data-name="battlefield 1" data-filters="اکشن سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1238840/header.jpg" alt="Battlefield 1" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Battlefield 1</h3>
+        <p class="game-desc">نبردهای سهمگین و سینمایی جنگ جهانی اول با بخش آنلاین پرطرفدار.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۷ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / شوتر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Battlefield+1+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Battlefield 3 -->
+<div class="game-card" data-name="battlefield 3" data-filters="اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1238820/header.jpg" alt="Battlefield 3" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Battlefield 3</h3>
+        <p class="game-desc">یکی از ماندگارترین شوترهای مدرن با کمپین جذاب و نبردهای واقعی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۶ ساعت</span></div>
+            <div>حجم: <span>۱۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / شوتر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Battlefield+3+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Battlefield 4 -->
+<div class="game-card" data-name="battlefield 4" data-filters="اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1238860/header.jpg" alt="Battlefield 4" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Battlefield 4</h3>
+        <p class="game-desc">تخریب‌پذیری فوق‌العاده محیط و نبردهای نظامی گسترده مدرن.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۶ ساعت</span></div>
+            <div>حجم: <span>۴۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / شوتر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Battlefield+4+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Battlefield 5 -->
+<div class="game-card" data-name="battlefield 5" data-filters="اکشن سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1238810/header.jpg" alt="Battlefield 5" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Battlefield V</h3>
+        <p class="game-desc">روایت خطوط مقدم جنگ جهانی دوم با گرافیک خیره‌کننده.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۶ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / شوتر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Battlefield+V+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Battlefield Hardline -->
+<div class="game-card" data-name="battlefield hardline" data-filters="اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1238880/header.jpg" alt="Battlefield Hardline" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Battlefield Hardline</h3>
+        <p class="game-desc">تقابل دزد و پلیس در قالب مبارزات پرسرعت خیابانی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۷ ساعت</span></div>
+            <div>حجم: <span>۴۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / شوتر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Battlefield+Hardline+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Ben 10: Power Trip -->
+<div class="game-card" data-name="ben 10 power trip" data-filters="اکشن جهان‌باز کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1063230/header.jpg" alt="Ben 10 Power Trip" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Ben 10: Power Trip</h3>
+        <p class="game-desc">تبدیل شدن به موجودات فضایی بن ۱۰ و نجات جهان در ماجراجویی کارتونی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>۶ ساعت</span></div>
+            <div>حجم: <span>۴ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / کوآپ</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Ben+10+Power+Trip+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- BioShock Remastered -->
+<div class="game-card" data-name="bioshock remastered" data-filters="اکشن ترسناک">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/409710/header.jpg" alt="BioShock Remastered" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">BioShock Remastered</h3>
+        <p class="game-desc">سفر به شهر زیرآبی و عجیب Rapture و مبارزه با ساکنان مجنون آن.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۲ ساعت</span></div>
+            <div>حجم: <span>۲۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / ترسناک</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=BioShock+Remastered+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Black Myth: Wukong -->
+<div class="game-card" data-name="black myth wukong" data-filters="اکشن رول‌پلی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2358720/header.jpg" alt="Black Myth Wukong" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Black Myth: Wukong</h3>
+        <p class="game-desc">نقش‌آفرینی اکشن حماسی بر اساس افسانه‌های شاه میمون با گرافیک مسحورکننده.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۳۵ ساعت</span></div>
+            <div>حجم: <span>۱۳۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / RPG</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Black+Myth+Wukong+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Blizzard Arcade Collection -->
+<div class="game-card" data-name="blizzard arcade collection" data-filters="اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1172620/header.jpg" alt="Blizzard Arcade Collection" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Blizzard Arcade Collection</h3>
+        <p class="game-desc">مجموعه بازی‌های نوستالژیک کلاسیک بلیزارد مانند The Lost Vikings و Rock N' Roll Racing.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+10</span></div>
+            <div>زمان: <span>۱۰ ساعت</span></div>
+            <div>حجم: <span>۴ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>آرکید / آرکید</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Blizzard+Arcade+Collection+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Borderlands 4 -->
+<div class="game-card" data-name="borderlands 4" data-filters="اکشن رول‌پلی کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1286680/header.jpg" alt="Borderlands 4" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Borderlands 4</h3>
+        <p class="game-desc">شوتر لوت‌محور دیوانه‌وار با میلیون‌ها اسلحه و گرافیک سل‌شید جذاب.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۳۰ ساعت</span></div>
+            <div>حجم: <span>۸۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / کوآپ</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Borderlands+4+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Bully: Scholarship Edition -->
+<div class="game-card" data-name="bully scholarship edition" data-filters="اکشن جهان‌باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/12200/header.jpg" alt="Bully Scholarship Edition" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Bully: Scholarship Edition</h3>
+        <p class="game-desc">زندگی مدرسه‌ای جیمی هاپکینز در آکادمی بولورت و شیطنت‌های دزدکی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۳ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Bully+Scholarship+Edition+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Call of Duty -->
+<div class="game-card" data-name="call of duty" data-filters="اکشن سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2620/header.jpg" alt="Call of Duty" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Call of Duty</h3>
+        <p class="game-desc">نسخه اول شوتر افسانه‌ای جنگ جهانی دوم که دنیای شوترها را تغییر داد.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۶ ساعت</span></div>
+            <div>حجم: <span>۲ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / شوتر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Call+of+Duty+1+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Call of Duty: Advanced Warfare -->
+<div class="game-card" data-name="call of duty advanced warfare" data-filters="اکشن سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/209650/header.jpg" alt="COD Advanced Warfare" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Call of Duty: Advanced Warfare</h3>
+        <p class="game-desc">نبردهای آینده‌نگرانه با لباس‌های اسکلت خارجی (Exosuits) و تحرک بالا.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۷ ساعت</span></div>
+            <div>حجم: <span>۵۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / شوتر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=COD+Advanced+Warfare+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Call of Duty: Black Ops -->
+<div class="game-card" data-name="call of duty black ops" data-filters="اکشن سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/42700/header.jpg" alt="COD Black Ops" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Call of Duty: Black Ops</h3>
+        <p class="game-desc">عملیات سری دوران جنگ سرد و داستان مرموز اعداد در ذهن آلکس میسون.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۷ ساعت</span></div>
+            <div>حجم: <span>۱۲ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / شوتر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=COD+Black+Ops+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Call of Duty: Black Ops III -->
+<div class="game-card" data-name="call of duty black ops iii" data-filters="اکشن کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/311210/header.jpg" alt="COD Black Ops III" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Call of Duty: Black Ops III</h3>
+        <p class="game-desc">نبردهای سایبرنتیک در آینده همراه با بخش زامبی جذاب و داستانی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۹ ساعت</span></div>
+            <div>حجم: <span>۶۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / شوتر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=COD+Black+Ops+3+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Call of Duty: Black Ops Cold War -->
+<div class="game-card" data-name="call of duty black ops cold war" data-filters="اکشن سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1985810/header.jpg" alt="COD Cold War" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Call of Duty: Black Ops Cold War</h3>
+        <p class="game-desc">جاسوسی و نبردهای واقعی جنگ سرد در دهه ۱۹۸۰ میلادی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۶ ساعت</span></div>
+            <div>حجم: <span>۱۳۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / شوتر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=COD+Cold+War+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Call of Duty: Ghosts -->
+<div class="game-card" data-name="call of duty ghosts" data-filters="اکشن سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/209160/header.jpg" alt="COD Ghosts" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Call of Duty: Ghosts</h3>
+        <p class="game-desc">مبارزه گروه نیروهای ویژه «گوست» برای بقای آمریکا در آخرالزمان نظامی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۶ ساعت</span></div>
+            <div>حجم: <span>۴۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / شوتر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=COD+Ghosts+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Call of Duty: Infinite Warfare -->
+<div class="game-card" data-name="call of duty infinite warfare" data-filters="اکشن سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/292730/header.jpg" alt="COD Infinite Warfare" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Call of Duty: Infinite Warfare</h3>
+        <p class="game-desc">نبردهای فضایی و تیراندازی در منظومه شمسی با داستانی حماسی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۷ ساعت</span></div>
+            <div>حجم: <span>۷۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / شوتر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=COD+Infinite+Warfare+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Call of Duty: Vanguard -->
+<div class="game-card" data-name="call of duty vanguard" data-filters="اکشن سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1985810/header.jpg" alt="COD Vanguard" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Call of Duty: Vanguard</h3>
+        <p class="game-desc">شکل‌گیری اولین نیروهای ویژه بین‌المللی در جبهه‌های مختلف جنگ جهانی دوم.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۶ ساعت</span></div>
+            <div>حجم: <span>۹۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / شوتر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=COD+Vanguard+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Call of Duty: WWII -->
+<div class="game-card" data-name="call of duty wwii" data-filters="اکشن سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/476600/header.jpg" alt="COD WWII" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Call of Duty: WWII</h3>
+        <p class="game-desc">بازگشت به میدان‌های نبرد اروپایی جنگ جهانی دوم و تجربه پیاده‌سازی نادماندی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۷ ساعت</span></div>
+            <div>حجم: <span>۸۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / شوتر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=COD+WWII+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- The Callisto Protocol -->
+<div class="game-card" data-name="the callisto protocol" data-filters="ترسناک بقا اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1544020/header.jpg" alt="The Callisto Protocol" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">The Callisto Protocol</h3>
+        <p class="game-desc">فرار از زندانی پر از هیولاهای جهش‌یافته در یکی از ماه‌های سیاره مشتری.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۰ ساعت</span></div>
+            <div>حجم: <span>۷۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ترسناک / بقا</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=The+Callisto+Protocol+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Cars 3: Driven to Win -->
+<div class="game-card" data-name="cars 3 driven to win" data-filters="ورزشی کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1063230/header.jpg" alt="Cars 3 Driven to Win" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Cars 3: Driven to Win</h3>
+        <p class="game-desc">مسابقات اتومبیل‌رانی جذاب بر اساس انیمیشن محبوب ماشین‌ها ۳.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۸ ساعت</span></div>
+            <div>حجم: <span>۴ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>مسابقه‌ای / کوآپ</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Cars+3+Driven+to+Win+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Commandos Origins -->
+<div class="game-card" data-name="commandos origins" data-filters="اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1473140/header.jpg" alt="Commandos Origins" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Commandos: Origins</h3>
+        <p class="game-desc">بازگشت تاکتیک‌های مخفی‌کاری کماندوها در دوران جنگ جهانی دوم.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۲۰ ساعت</span></div>
+            <div>حجم: <span>۲۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>استراتژی / تاکتیک</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Commandos+Origins+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Contra: Operation Galuga -->
+<div class="game-card" data-name="contra operation galuga" data-filters="اکشن کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2235020/header.jpg" alt="Contra Operation Galuga" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Contra: Operation Galuga</h3>
+        <p class="game-desc">بازسازی مدرن از بازی آرکید دوئل و تیراندازی کنترا کلاسیک.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۵ ساعت</span></div>
+            <div>حجم: <span>۱۲ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / کوآپ</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Contra+Operation+Galuga+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Control -->
+<div class="game-card" data-name="control" data-filters="اکشن سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/870780/header.jpg" alt="Control" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Control</h3>
+        <p class="game-desc">استفاده از نیروهای دورفرمانی و ماوراءالطبیعه در یک اداره اسرارآمیز.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۱۲ ساعت</span></div>
+            <div>حجم: <span>۴۲ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / ماوراءالطبیعه</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Control+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Crash Bandicoot -->
+<div class="game-card" data-name="crash bandicoot" data-filters="اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/731490/header.jpg" alt="Crash Bandicoot" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Crash Bandicoot</h3>
+        <p class="game-desc">سکوبازی خاطره‌انگیز و چالش‌برانگیز کرش برای شکست دادن دکتر نئو کورتکس.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>۸ ساعت</span></div>
+            <div>حجم: <span>۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>پلاتفرمر / آرکید</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Crash+Bandicoot+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Crash Bandicoot N. Sane Trilogy -->
+<div class="game-card" data-name="crash bandicoot n sane trilogy" data-filters="اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/731490/header.jpg" alt="Crash N Sane Trilogy" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Crash Bandicoot N. Sane Trilogy</h3>
+        <p class="game-desc">بازسازی مدرن سه‌گانه اصلی و محبوب کرش بندیکوت با گرافیک عالی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۳۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>پلاتفرمر / آرکید</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Crash+N+Sane+Trilogy+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Crash Team Racing Nitro-Fueled -->
+<div class="game-card" data-name="crash team racing nitro fueled" data-filters="ورزشی کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/731490/header.jpg" alt="Crash Team Racing" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Crash Team Racing Nitro-Fueled</h3>
+        <p class="game-desc">مسابقات کارتینگ فوق‌العاده هیجان‌انگیز و خنده‌دار با کاراکترهای کرش.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۱۰ ساعت</span></div>
+            <div>حجم: <span>۱۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>مسابقه‌ای / کوآپ</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Crash+Team+Racing+Nitro+Fueled+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Cronos: The New Dawn -->
+<div class="game-card" data-name="cronos the new dawn" data-filters="ترسناک بقا">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1590940/header.jpg" alt="Cronos The New Dawn" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Cronos: The New Dawn</h3>
+        <p class="game-desc">یک ترسناک بقای علمی تخیلی جذاب در دنیایی تغییریافته و نابودشده.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۴۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ترسناک / بقا</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Cronos+The+New+Dawn+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Crysis Remastered -->
+<div class="game-card" data-name="crysis remastered" data-filters="اکشن جهان‌باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1715130/header.jpg" alt="Crysis Remastered" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Crysis Remastered</h3>
+        <p class="game-desc">استفاده از قدرت‌های لباس نانو در جزیره استوایی علیه متجاوزان بیگانه.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۱۰ ساعت</span></div>
+            <div>حجم: <span>۲۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / شوتر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Crysis+Remastered+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Cuphead -->
+<div class="game-card" data-name="cuphead" data-filters="اکشن کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/268910/header.jpg" alt="Cuphead" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Cuphead</h3>
+        <p class="game-desc">بازی بسیار سخت با طراحی گرافیکی سنتی به سبک انیمیشن‌های دهه ۱۹۳۰.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>۱۰ ساعت</span></div>
+            <div>حجم: <span>۴ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / کوآپ</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Cuphead+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Cyberpunk 2077 -->
+<div class="game-card" data-name="cyberpunk 2077" data-filters="رول‌پلی جهان‌باز اکشن سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg" alt="Cyberpunk 2077" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Cyberpunk 2077</h3>
+        <p class="game-desc">نقش‌آفرینی در کلان‌شهر مدرن نایت‌سیتی با آزادی عمل بالاو ارتقاهای سایبرنتیک.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۲۵ ساعت</span></div>
+            <div>حجم: <span>۷۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>RPG / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Cyberpunk+2077+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Dante's Inferno -->
+<div class="game-card" data-name="dante's inferno" data-filters="اکشن سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1222700/header.jpg" alt="Dante's Inferno" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Dante's Inferno</h3>
+        <p class="game-desc">سفر حماسی دانته به ۹ طبقه جهنم برای نجات روح معشوقه‌اش بیاتریس.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۹ ساعت</span></div>
+            <div>حجم: <span>۸ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / هک اند اسلش</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Dantes+Inferno+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Darksiders II Deathinitive Edition -->
+<div class="game-card" data-name="darksiders ii deathinitive edition" data-filters="اکشن رول‌پلی جهان‌باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/388410/header.jpg" alt="Darksiders II" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Darksiders II Deathinitive Edition</h3>
+        <p class="game-desc">هدایت "مرگ" یکی از چهار سوار آخرالزمان برای پاک کردن نام برادرش.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۲۰ ساعت</span></div>
+            <div>حجم: <span>۱۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / RPG</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Darksiders+2+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Darksiders Genesis -->
+<div class="game-card" data-name="darksiders genesis" data-filters="اکشن کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/710920/header.jpg" alt="Darksiders Genesis" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Darksiders Genesis</h3>
+        <p class="game-desc">تجربه هک اند اسلش ایزومتریک با حضور دو سوار آخرالزمان، "نزاع" و "جنگ".</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۱۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / کوآپ</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Darksiders+Genesis+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Dead Cells -->
+<div class="game-card" data-name="dead cells" data-filters="اکشن بقا">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/588650/header.jpg" alt="Dead Cells" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Dead Cells</h3>
+        <p class="game-desc">یک روگ‌لایت فوق‌العاده اعتیادآور و سریع با نبردهای چالش‌برانگیز دوبعدی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۲ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / اکشن</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Dead+Cells+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Dead Island 2 -->
+<div class="game-card" data-name="dead island 2" data-filters="اکشن بقا کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/934700/header.jpg" alt="Dead Island 2" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Dead Island 2</h3>
+        <p class="game-desc">سلاخی زامبی‌ها در لس‌آنجلس خردشده با مبارزات تن‌به‌تن پرخشونت و خنده‌دار.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / بقا</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Dead+Island+2+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Dead Space -->
+<div class="game-card" data-name="dead space" data-filters="ترسناک بقا اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1693980/header.jpg" alt="Dead Space" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Dead Space</h3>
+        <p class="game-desc">بازسازی فوق‌العاده ترسناک فضای مرگ در ایستگاه فضایی ایشیمورا.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۲ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ترسناک / بقا</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Dead+Space+Remake+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Death Stranding -->
+<div class="game-card" data-name="death stranding" data-filters="سینمایی جهان‌باز اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1850570/header.jpg" alt="Death Stranding" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Death Stranding</h3>
+        <p class="game-desc">شاهکار هیدئو کوجیما درباره اتصال مجدد جوامع انسانی در دنیایی ویران‌شده.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۴۰ ساعت</span></div>
+            <div>حجم: <span>۸۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>سینمایی / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Death+Stranding+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Demon's Souls -->
+<div class="game-card" data-name="demon's souls" data-filters="اکشن رول‌پلی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1888160/header.jpg" alt="Demon's Souls" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Demon's Souls</h3>
+        <p class="game-desc">مبدأ سبک سولزلایک با نبردهای سخت و تاریک در پادشاهی بولتاریا.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۳۰ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>RPG / اکشن</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Demons+Souls+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Devil May Cry 5 -->
+<div class="game-card" data-name="devil may cry 5" data-filters="اکشن سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/601150/header.jpg" alt="Devil May Cry 5" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Devil May Cry 5</h3>
+        <p class="game-desc">مبارزات سریع و شیک دانته، نرو و وی در برابر تهاجم شیاطین.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۱ ساعت</span></div>
+            <div>حجم: <span>۴۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / هک اند اسلش</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Devil+May+Cry+5+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- DiRT 5 -->
+<div class="game-card" data-name="dirt 5" data-filters="ورزشی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1038250/header.jpg" alt="DiRT 5" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">DiRT 5</h3>
+        <p class="game-desc">مسابقات آرکید و آفرود جذاب در مسیرهای برفی، گلی و کوهستانی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>مسابقه‌ای / آفرود</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=DiRT+5+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Dishonored 2 -->
+<div class="game-card" data-name="dishonored 2" data-filters="اکشن جهان‌باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/403640/header.jpg" alt="Dishonored 2" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Dishonored 2</h3>
+        <p class="game-desc">مخفی‌کاری و جادو در نقش کوروو یا امیلی برای پس گرفتن تخت پادشاهی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۲ ساعت</span></div>
+            <div>حجم: <span>۴۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / مخفی‌کاری</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Dishonored+2+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Dishonored Definitive Edition -->
+<div class="game-card" data-name="dishonored definitive edition" data-filters="اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/217980/header.jpg" alt="Dishonored Definitive Edition" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Dishonored Definitive Edition</h3>
+        <p class="game-desc">تجربه کامل اولین نسخه دیشنورد به همراه تمامی بسته‌های الحاقی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۲ ساعت</span></div>
+            <div>حجم: <span>۳۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / مخفی‌کاری</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Dishonored+Definitive+Edition+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Disney Epic Mickey 2: The Power of Two -->
+<div class="game-card" data-name="disney epic mickey 2 the power of two" data-filters="اکشن کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/245300/header.jpg" alt="Epic Mickey 2" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Disney Epic Mickey 2: The Power of Two</h3>
+        <p class="game-desc">ماجراجویی دونفره میکی ماوس و اسوالد با قلم‌موهای جادویی رنگ و حلال.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>۱۰ ساعت</span></div>
+            <div>حجم: <span>۷ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ماجراجویی / کوآپ</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Epic+Mickey+2+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- DOOM Eternal -->
+<div class="game-card" data-name="doom eternal" data-filters="اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/782330/header.jpg" alt="DOOM Eternal" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">DOOM Eternal</h3>
+        <p class="game-desc">نابودی شیاطین با سرعت و خشونت بی‌نظیر در نقش دوم اسلیر.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۴ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / شوتر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=DOOM+Eternal+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- DOOM: The Dark Ages -->
+<div class="game-card" data-name="doom the dark ages" data-filters="اکشن سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/782330/header.jpg" alt="DOOM The Dark Ages" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">DOOM: The Dark Ages</h3>
+        <p class="game-desc">روایت خاستگاه دوم اسلیر در جنگ‌های قرون وسطایی علیه نیروهای جهنمی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۷۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / شوتر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=DOOM+The+Dark+Ages+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Dragon Age: The Veilguard -->
+<div class="game-card" data-name="dragon age the veilguard" data-filters="رول‌پلی جهان‌باز اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1845910/header.jpg" alt="Dragon Age The Veilguard" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Dragon Age: The Veilguard</h3>
+        <p class="game-desc">ایستادگی در برابر خدایان باستان و نجات دنیای تداس در نقش گارد ویل.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۴۰ ساعت</span></div>
+            <div>حجم: <span>۹۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>RPG / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Dragon+Age+The+Veilguard+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Dragon's Dogma II -->
+<div class="game-card" data-name="dragon's dogma ii" data-filters="رول‌پلی جهان‌باز اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2054970/header.jpg" alt="Dragon's Dogma II" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Dragon's Dogma II</h3>
+        <p class="game-desc">نقش‌آفرینی عمیق و دنیایی زنده با همراهان پیاده (Pawn) در مبارزه با اژدها.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۳۵ ساعت</span></div>
+            <div>حجم: <span>۷۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>RPG / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Dragons+Dogma+2+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Dying Light 2 Stay Human -->
+<div class="game-card" data-name="dying light 2 stay human" data-filters="بقا جهان‌باز اکشن کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/534380/header.jpg" alt="Dying Light 2" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Dying Light 2 Stay Human</h3>
+        <p class="game-desc">پارکور در شهر زامبی‌زده و مبارزات نفس‌گیر تن‌به‌تن در روز و شب.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۲۵ ساعت</span></div>
+            <div>حجم: <span>۶۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>بقا / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Dying+Light+2+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Dying Light: The Beast -->
+<div class="game-card" data-name="dying light the beast" data-filters="بقا جهان‌باز اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/534380/header.jpg" alt="Dying Light The Beast" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Dying Light: The Beast</h3>
+        <p class="game-desc">بازگشت کایل کرین در ماجراجویی جدید با قدرت‌های زامبی هیولایی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۲۰ ساعت</span></div>
+            <div>حجم: <span>۵۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>بقا / اکشن</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Dying+Light+The+Beast+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Dynasty Warriors -->
+<div class="game-card" data-name="dynasty warriors" data-filters="اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/936680/header.jpg" alt="Dynasty Warriors" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Dynasty Warriors</h3>
+        <p class="game-desc">نبرد با هزاران سرباز به طور همزمان در میدان‌های جنگ چین باستان.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۲۰ ساعت</span></div>
+            <div>حجم: <span>۴۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / هک اند اسلش</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Dynasty+Warriors+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- EA Sports FC 24 -->
+<div class="game-card" data-name="ea sports fc 24" data-filters="ورزشی کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2195250/header.jpg" alt="EA Sports FC 24" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">EA Sports FC 24</h3>
+        <p class="game-desc">نسل جدید شبیه‌ساز فوتبال با فناوری HyperMotionV و لیگ‌های معتبر.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۱۰۰ ساعت</span></div>
+            <div>حجم: <span>۵۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ورزشی / ورزشی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=EA+Sports+FC+24+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- EA Sports FC 25 -->
+<div class="game-card" data-name="ea sports fc 25" data-filters="ورزشی کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2669320/header.jpg" alt="EA Sports FC 25" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">EA Sports FC 25</h3>
+        <p class="game-desc">بهترین تجربه فوتبالی با سیستم‌های تاکتیکی جدید و حالت Rush ۵ به ۵.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۱۰۰ ساعت</span></div>
+            <div>حجم: <span>۶۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ورزشی / ورزشی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=EA+Sports+FC+25+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- EA Sports FC 26 -->
+<div class="game-card" data-name="ea sports fc 26" data-filters="ورزشی کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2669320/header.jpg" alt="EA Sports FC 26" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">EA Sports FC 26</h3>
+        <p class="game-desc">شبیه‌ساز پیشرفته فوتبال با آخرین ترکیب‌ها و فیزیک واقع‌گرایانه توپ.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۱۰۰ ساعت</span></div>
+            <div>حجم: <span>۶۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ورزشی / ورزشی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=EA+Sports+FC+26+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- eFootball PES 2021 Season Update -->
+<div class="game-card" data-name="efootball pes 2021 season update" data-filters="ورزشی کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1259970/header.jpg" alt="eFootball PES 2021" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">eFootball PES 2021</h3>
+        <p class="game-desc">نسخه به‌روزرسانی شده شبیه‌ساز فوتبال محبوب کونامی با گیم‌پلی روان.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۵۰ ساعت</span></div>
+            <div>حجم: <span>۴۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ورزشی / ورزشی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=PES+2021+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Elden Ring -->
+<div class="game-card" data-name="elden ring" data-filters="رول‌پلی جهان‌باز اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg" alt="Elden Ring" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Elden Ring</h3>
+        <p class="game-desc">شاهکار جهان‌باز فرام‌سافت‌ور با باس‌های حماسی و کاوش در سرزمین‌های میانه.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۶۰ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>RPG / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Elden+Ring+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Elder Scrolls IV: Oblivion -->
+<div class="game-card" data-name="elder scrolls iv oblivion" data-filters="رول‌پلی جهان‌باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/22330/header.jpg" alt="Oblivion" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Elder Scrolls IV: Oblivion</h3>
+        <p class="game-desc">نقش‌آفرینی محبوب در استان سیرودیل و بستن دروازه‌های جهنمی اوبلیویون.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۳۰ ساعت</span></div>
+            <div>حجم: <span>۶ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>RPG / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Oblivion+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Elder Scrolls V: Skyrim -->
+<div class="game-card" data-name="elder scrolls v skyrim" data-filters="رول‌پلی جهان‌باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/489830/header.jpg" alt="Skyrim" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Elder Scrolls V: Skyrim</h3>
+        <p class="game-desc">اژدهازاده شوید و در دنیای برفی و بی‌انتهای اسکایریم به ماجراجویی بپردازید.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۳۵ ساعت</span></div>
+            <div>حجم: <span>۲۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>RPG / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Skyrim+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Expedition 33 -->
+<div class="game-card" data-name="expedition 33" data-filters="رول‌پلی سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1985810/header.jpg" alt="Expedition 33" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Clair Obscur: Expedition 33</h3>
+        <p class="game-desc">نقش‌آفرینی نوبتی خیره‌کننده نوین الهام‌گرفته از هنر و فرانسه‌ی قرن ۱۹.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۳۰ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>RPG / سینمایی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Expedition+33+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Evil West -->
+<div class="game-card" data-name="evil west" data-filters="اکشن کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1249010/header.jpg" alt="Evil West" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Evil West</h3>
+        <p class="game-desc">شکار خون‌آشام‌ها و هیولاها در غرب وحشی تاریک با تسلیحات فوق‌پیشرفته.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۱ ساعت</span></div>
+            <div>حجم: <span>۳۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / کوآپ</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Evil+West+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- F1 22 -->
+<div class="game-card" data-name="f1 22" data-filters="ورزشی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1692250/header.jpg" alt="F1 22" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">F1 22</h3>
+        <p class="game-desc">شبیه‌ساز مسابقات رسمی فرمول یک با خودروها و پیست‌های جدید.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۲۵ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>مسابقه‌ای / ورزشی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=F1+22+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- F1 23 -->
+<div class="game-card" data-name="f1 23" data-filters="ورزشی سینمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2108330/header.jpg" alt="F1 23" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">F1 23</h3>
+        <p class="game-desc">تجربه داستان هیجان‌انگیز Braking Point 2 و هدایت ماشین‌های فرمول ۱.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۲۵ ساعت</span></div>
+            <div>حجم: <span>۵۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>مسابقه‌ای / سینمایی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=F1+23+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- F1 24 -->
+<div class="game-card" data-name="f1 24" data-filters="ورزشی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2488620/header.jpg" alt="F1 24" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">F1 24</h3>
+        <p class="game-desc">جدیدترین نسخه مسابقات فرمول یک با کنترل واقع‌گرایانه و بخش کریر ارتقایافته.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۲۵ ساعت</span></div>
+            <div>حجم: <span>۶۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>مسابقه‌ای / ورزشی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=F1+24+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- F1 25 -->
+<div class="game-card" data-name="f1 25" data-filters="ورزشی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2488620/header.jpg" alt="F1 25" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">F1 25</h3>
+        <p class="game-desc">رقابت‌های شبیه‌سازی‌شده فرمول یک فصل جدید با هوش مصنوعی هوشمندتر.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۲۵ ساعت</span></div>
+            <div>حجم: <span>۶۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>مسابقه‌ای / ورزشی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=F1+25+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Farming Simulator 22 -->
+<div class="game-card" data-name="farming simulator 22" data-filters="جهان‌باز کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1248130/header.jpg" alt="Farming Simulator 22" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Farming Simulator 22</h3>
+        <p class="game-desc">تجربه واقع‌گرایانه کشاورزی، دامداری و مدیریت ماشین‌آلات سنگین.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۵۰ ساعت</span></div>
+            <div>حجم: <span>۳۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>شبیه‌ساز / کوآپ</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Farming+Simulator+22+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Farming Simulator 25 -->
+<div class="game-card" data-name="farming simulator 25" data-filters="جهان‌باز کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2300320/header.jpg" alt="Farming Simulator 25" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Farming Simulator 25</h3>
+        <p class="game-desc">کشاورزی مدرن در آسیا و آمریکا با محصولات جدید مانند برنج و گرافیک بهینه‌شده.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۵۰ ساعت</span></div>
+            <div>حجم: <span>۴۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>شبیه‌ساز / کوآپ</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Farming+Simulator+25+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Far Cry 3 Classic Edition -->
+<div class="game-card" data-name="far cry 3 classic edition" data-filters="اکشن جهان باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/233270/header.jpg" alt="Far Cry 3 Classic Edition" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Far Cry 3 Classic Edition</h3>
+        <p class="game-desc">تلاش برای بقا در یک جزیره استوایی خطرناک و مبارزه با دزدان دریایی و واس.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۱۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Far+Cry+3+Classic+Edition+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Far Cry Primal -->
+<div class="game-card" data-name="far cry primal" data-filters="اکشن جهان باز بقا">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/371660/header.jpg" alt="Far Cry Primal" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Far Cry Primal</h3>
+        <p class="game-desc">سفری به عصر سنگ؛ رام کردن حیوانات وحشی و نبرد برای بقای قبیله.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۲۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / بقا</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Far+Cry+Primal+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Far Cry 4 -->
+<div class="game-card" data-name="far cry 4" data-filters="اکشن جهان باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/298110/header.jpg" alt="Far Cry 4" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Far Cry 4</h3>
+        <p class="game-desc">ماجراجویی در کوهستان‌های کیرات و مبارزه با دیکتاتور دیوانه‌ای به نام پگان مین.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۸ ساعت</span></div>
+            <div>حجم: <span>۳۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Far+Cry+4+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Far Cry 5 -->
+<div class="game-card" data-name="far cry 5" data-filters="اکشن جهان باز شوتر">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/552500/header.jpg" alt="Far Cry 5" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Far Cry 5</h3>
+        <p class="game-desc">مبارزه با یک فرقه مذهبی افراطی در ایالت مونتانای آمریکا.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۸ ساعت</span></div>
+            <div>حجم: <span>۴۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>شوتر / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Far+Cry+5+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Far Cry New Dawn -->
+<div class="game-card" data-name="far cry new dawn" data-filters="اکشن جهان باز شوتر">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/939960/header.jpg" alt="Far Cry New Dawn" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Far Cry New Dawn</h3>
+        <p class="game-desc">ادامه‌ای بر فارکرای ۵ در دنیایی پسارستاخیزی و رنگارنگ.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۱ ساعت</span></div>
+            <div>حجم: <span>۳۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>شوتر / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Far+Cry+New+Dawn+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Far Cry 6 -->
+<div class="game-card" data-name="far cry 6" data-filters="اکشن جهان باز شوتر">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2369390/header.jpg" alt="Far Cry 6" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Far Cry 6</h3>
+        <p class="game-desc">پیوند به انقلاب چریکی برای سرنگونی دیکتاتور جزیره یارا، آنتون کاستیو.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۲۳ ساعت</span></div>
+            <div>حجم: <span>۶۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>شوتر / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Far+Cry+6+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- First Light -->
+<div class="game-card" data-name="first light" data-filters="اکشن ابرقهرمانی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg" alt="Infamous First Light" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Infamous First Light</h3>
+        <p class="game-desc">داستان منشأ قدرتهای نئونی Fetch و مبارزه او در شهر سیتل.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۵ ساعت</span></div>
+            <div>حجم: <span>۱۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / ماجراجویی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Infamous+First+Light+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Forza Horizon 4 -->
+<div class="game-card" data-name="forza horizon 4" data-filters="مسابقه ای ریسینگ جهان باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1293830/header.jpg" alt="Forza Horizon 4" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Forza Horizon 4</h3>
+        <p class="game-desc">تجربه ریسینگ بی‌نظیر در بریتانیا با تغییرات دینامیک فصل‌ها.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۲۵ ساعت</span></div>
+            <div>حجم: <span>۸۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ریسینگ / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Forza+Horizon+4+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Forza Horizon 5 -->
+<div class="game-card" data-name="forza horizon 5" data-filters="مسابقه ای ریسینگ جهان باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1551360/header.jpg" alt="Forza Horizon 5" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Forza Horizon 5</h3>
+        <p class="game-desc">کاوش در مناظر خیره‌کننده و متنوع مکزیک با صدها خودروی رویایی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۳۰ ساعت</span></div>
+            <div>حجم: <span>۱۱۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ریسینگ / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Forza+Horizon+5+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Forza Horizon 6 -->
+<div class="game-card" data-name="forza horizon 6" data-filters="مسابقه ای ریسینگ جهان باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1551360/header.jpg" alt="Forza Horizon 6" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Forza Horizon 6</h3>
+        <p class="game-desc">نسخه جدید از سری محبوب فورتزا هورایزن با گرافیک نسل بعدی و نقشه وسیع تر.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>-- ساعت</span></div>
+            <div>حجم: <span>۱۲۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ریسینگ / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Forza+Horizon+6+Trailer" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Forza Motorsport -->
+<div class="game-card" data-name="forza motorsport" data-filters="مسابقه ای ریسینگ شبیه ساز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1577120/header.jpg" alt="Forza Motorsport" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Forza Motorsport</h3>
+        <p class="game-desc">شبیه‌ساز حرفه‌ای مسابقات اتومبیل‌رانی در پیست‌های واقعی جهان.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۳۵ ساعت</span></div>
+            <div>حجم: <span>۱۳۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ریسینگ / شبیه‌ساز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Forza+Motorsport+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Frostpunk 2 -->
+<div class="game-card" data-name="frostpunk 2" data-filters="استراتژیک بقا شبیه ساز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1601580/header.jpg" alt="Frostpunk 2" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Frostpunk 2</h3>
+        <p class="game-desc">مدیریت آخرین شهر روی زمین در سرمای کشنده و اتخاذ تصمیمات سخت مدیریتی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۲۰ ساعت</span></div>
+            <div>حجم: <span>۳۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>استراتژیک / بقا</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Frostpunk+2+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Gang Beasts -->
+<div class="game-card" data-name="gang beasts" data-filters="کمدی کوآپ خنده دار">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/285900/header.jpg" alt="Gang Beasts" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Gang Beasts</h3>
+        <p class="game-desc">بازی چندنفره خنده‌دار مبارزه ژله‌ای در محیط‌های پر از خطر.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>بازی گروهی</span></div>
+            <div>حجم: <span>۴ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>کمدی / کوآپ</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Gang+Beasts+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Gears of War -->
+<div class="game-card" data-name="gears of war" data-filters="اکشن شوتر سوم شخص">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/637650/header.jpg" alt="Gears of War" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Gears of War</h3>
+        <p class="game-desc">نبرد حماسی مارکوس فینیکس و جوانمردانش علیه موجودات لوکاست.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۹ ساعت</span></div>
+            <div>حجم: <span>۲۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>شوتر سوم‌شخص</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Gears+of+War+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Gears of War 2 -->
+<div class="game-card" data-name="gears of war 2" data-filters="اکشن شوتر سوم شخص">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/637650/header.jpg" alt="Gears of War 2" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Gears of War 2</h3>
+        <p class="game-desc">گسترش جنگ با لوکاست‌ها و ورود به اعماق سیاره برای نجات بشریت.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۲ ساعت</span></div>
+            <div>حجم: <span>۱۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>شوتر سوم‌شخص</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Gears+of+War+2+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Gears of War 3 -->
+<div class="game-card" data-name="gears of war 3" data-filters="اکشن شوتر سوم شخص">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/637650/header.jpg" alt="Gears of War 3" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Gears of War 3</h3>
+        <p class="game-desc">پایان سه‌گانه اصلی و نبرد نهایی علیه لوکاست‌ها و لمبرنت‌ها.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۲ ساعت</span></div>
+            <div>حجم: <span>۱۶ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>شوتر سوم‌شخص</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Gears+of+War+3+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Gears of War 4 -->
+<div class="game-card" data-name="gears of war 4" data-filters="اکشن شوتر سوم شخص">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/637650/header.jpg" alt="Gears of War 4" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Gears of War 4</h3>
+        <p class="game-desc">شروع نسلی جدید با جیدی فینیکس و مبارزه با تهدید جدید سواپ.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۰ ساعت</span></div>
+            <div>حجم: <span>۵۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>شوتر سوم‌شخص</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Gears+of+War+4+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Gears 5 -->
+<div class="game-card" data-name="gears 5" data-filters="اکشن شوتر سوم شخص">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1097840/header.jpg" alt="Gears 5" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Gears 5</h3>
+        <p class="game-desc">تمرکز بر داستان کیت دیاز و کشف ارتباط او با دشمنان اصلی بشر.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۲ ساعت</span></div>
+            <div>حجم: <span>۷۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>شوتر سوم‌شخص</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Gears+5+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Ghostwire: Tokyo -->
+<div class="game-card" data-name="ghostwire tokyo" data-filters="اکشن ماوراطبیعی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1475810/header.jpg" alt="Ghostwire Tokyo" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Ghostwire: Tokyo</h3>
+        <p class="game-desc">استفاده از هنرهای رزمی جادویی برای پاکسازی توکیو از ارواح خبیثه.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۱۱ ساعت</span></div>
+            <div>حجم: <span>۲۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / ترسناک</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Ghostwire+Tokyo+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Goat Simulator 3 -->
+<div class="game-card" data-name="goat simulator 3" data-filters="کمدی جهان باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/850170/header.jpg" alt="Goat Simulator 3" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Goat Simulator 3</h3>
+        <p class="game-desc">شبیه‌ساز بز دیوانه! ایجاد تخریب و آشوب در شهر به همراه دوستان.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۶ ساعت</span></div>
+            <div>حجم: <span>۱۲ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>کمدی / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Goat+Simulator+3+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Gotham Knights -->
+<div class="game-card" data-name="gotham knights" data-filters="اکشن نقش آفرینی کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1368080/header.jpg" alt="Gotham Knights" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Gotham Knights</h3>
+        <p class="game-desc">محافظت از گاتهام پس از مرگ بتمن توسط نایت‌وینگ، رد هود، بت‌گرل و رابین.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۱۶ ساعت</span></div>
+            <div>حجم: <span>۴۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / نقش‌آفرینی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Gotham+Knights+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Grand Theft Auto III -->
+<div class="game-card" data-name="grand theft auto iii gta 3" data-filters="اکشن جهان باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1546970/header.jpg" alt="GTA III" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Grand Theft Auto III</h3>
+        <p class="game-desc">سرآغاز سه‌بعدی شدن بازی‌های جهان‌باز در شهر لیبرتی سیتی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=GTA+3+Definitive+Edition+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Grand Theft Auto: Vice City -->
+<div class="game-card" data-name="grand theft auto vice city gta vice city" data-filters="اکشن جهان باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1546990/header.jpg" alt="GTA Vice City" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">GTA: Vice City</h3>
+        <p class="game-desc">داستان تامی ورستی در فضای جذاب و نئونی دهه ۸۰ میلادی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۶ ساعت</span></div>
+            <div>حجم: <span>۱۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=GTA+Vice+City+Definitive+Edition+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Grand Theft Auto: San Andreas -->
+<div class="game-card" data-name="grand theft auto san andreas gta sa" data-filters="اکشن جهان باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1547000/header.jpg" alt="GTA San Andreas" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">GTA: San Andreas</h3>
+        <p class="game-desc">ماجراجویی‌های فراموش‌نشدنی سی‌جی در ایالت سن اندرئاس.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۳۰ ساعت</span></div>
+            <div>حجم: <span>۲۲ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=GTA+San+Andreas+Definitive+Edition+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Grand Theft Auto IV -->
+<div class="game-card" data-name="grand theft auto iv gta 4" data-filters="اکشن جهان باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/12210/header.jpg" alt="GTA IV" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Grand Theft Auto IV</h3>
+        <p class="game-desc">داستان عمیق نیکو بلیک و تلاش برای دستیابی به رویای آمریکایی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۲۷ ساعت</span></div>
+            <div>حجم: <span>۲۲ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=GTA+4+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Grand Theft Auto V -->
+<div class="game-card" data-name="grand theft auto v gta 5" data-filters="اکشن جهان باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg" alt="GTA V" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Grand Theft Auto V</h3>
+        <p class="game-desc">داستان سه سرقت‌بزرگ‌کار حرفه‌ای در شهر لوس سانتوس.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۳۲ ساعت</span></div>
+            <div>حجم: <span>۹۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=GTA+5+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Green Hell -->
+<div class="game-card" data-name="green hell" data-filters="بقا شبیه ساز سخت">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/815370/header.jpg" alt="Green Hell" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Green Hell</h3>
+        <p class="game-desc">شبیه‌ساز بقای فوق‌العاده واقعی و چالش‌برانگیز در جنگل‌های آمازون.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۸ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>بقا / شبیه‌ساز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Green+Hell+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Grid Legends -->
+<div class="game-card" data-name="grid legends" data-filters="مسابقه ای ریسینگ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1307710/header.jpg" alt="Grid Legends" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Grid Legends</h3>
+        <p class="game-desc">مسابقات اتومبیل‌رانی پرهیجان داستانی و آنلاین با تنوع بالای خودروها.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۳۶ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ریسینگ / اکشن</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Grid+Legends+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Grounded -->
+<div class="game-card" data-name="grounded" data-filters="بقا کوآپ ماجراجویی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/962130/header.jpg" alt="Grounded" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Grounded</h3>
+        <p class="game-desc">بقا در حیاط خلوت خانه در حالی که به اندازه یک حشره کوچک شده‌اید!</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۲۵ ساعت</span></div>
+            <div>حجم: <span>۱۲ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>بقا / ماجراجویی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Grounded+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Grounded 2 -->
+<div class="game-card" data-name="grounded 2" data-filters="بقا کوآپ ماجراجویی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/962130/header.jpg" alt="Grounded 2" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Grounded 2</h3>
+        <p class="game-desc">ادامه‌ای بر دنیای مینیاتوری حیاط خلوت با حشرات جدید و قابلیت‌های ساخت بیشتر.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>-- ساعت</span></div>
+            <div>حجم: <span>۱۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>بقا / ماجراجویی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Grounded+2+Trailer" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Grounded Fully Yoked Edition -->
+<div class="game-card" data-name="grounded fully yoked edition" data-filters="بقا کوآپ ماجراجویی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/962130/header.jpg" alt="Grounded Fully Yoked" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Grounded: Fully Yoked</h3>
+        <p class="game-desc">نسخه کامل بازی بقای Grounded به همراه تمام آپدیت‌ها و محتواهای جدید.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۳۰ ساعت</span></div>
+            <div>حجم: <span>۱۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>بقا / ماجراجویی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Grounded+Fully+Yoked+Edition+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Hades II -->
+<div class="game-card" data-name="hades ii hades 2" data-filters="روگ لایک اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1145350/header.jpg" alt="Hades II" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Hades II</h3>
+        <p class="game-desc">شاهکاری در سبک روگ‌لایک؛ نبرد با جادوی سیاه در نقش شاهزاده جهان زیرین.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۲۵ ساعت</span></div>
+            <div>حجم: <span>۱۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>روگ‌لایک / اکشن</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Hades+2+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Halo: The Master Chief Collection -->
+<div class="game-card" data-name="halo the master chief collection mcc" data-filters="شوتر اکشن علمی تخیلی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/976730/header.jpg" alt="Halo MCC" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Halo: The Master Chief Collection</h3>
+        <p class="game-desc">مجموعه کامل ۶ نسخه اصلی و خاطره‌انگیز مستر چیف در یک پکیج.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۶۰ ساعت</span></div>
+            <div>حجم: <span>۱۳۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>شوتر اول‌شخص</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Halo+MCC+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Hellblade: Senua's Sacrifice -->
+<div class="game-card" data-name="hellblade senuas sacrifice" data-filters="داستانی روح روان اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/414340/header.jpg" alt="Hellblade" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Hellblade: Senua's Sacrifice</h3>
+        <p class="game-desc">سفری عمیق و تاریک به اعماق جهنم اساطیر وایکینگ‌ها و ذهن بیمار سنوا.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۸ ساعت</span></div>
+            <div>حجم: <span>۲۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>داستانی / روان‌شناختی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Hellblade+Senuas+Sacrifice+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Hellblade II: Senua's Saga -->
+<div class="game-card" data-name="hellblade ii senuas saga hellblade 2" data-filters="داستانی گرافیکی اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg" alt="Hellblade II" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Hellblade II: Senua's Saga</h3>
+        <p class="game-desc">ادامه داستان سنوا با گرافیکی خیره‌کننده و بی‌نظیر در ایسلند قرن دهم.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۷ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>سینمایی / ماجراجویی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Hellblade+2+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Hello Neighbor 2 -->
+<div class="game-card" data-name="hello neighbor 2" data-filters="ترسناک معمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1321630/header.jpg" alt="Hello Neighbor 2" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Hello Neighbor 2</h3>
+        <p class="game-desc">کشف رازهای همسایه مخوف و هوش مصنوعی یادگیرنده او.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۶ ساعت</span></div>
+            <div>حجم: <span>۸ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ترسناک / معمایی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Hello+Neighbor+2+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Hi-Fi Rush -->
+<div class="game-card" data-name="hi fi rush hifi rush" data-filters="ریتمیک اکشن کمدی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1817230/header.jpg" alt="Hi-Fi Rush" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Hi-Fi Rush</h3>
+        <p class="game-desc">مبارزات اکشن هک اند اسلش هماهنگ با بیت‌های موسیقی هوی متال.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۱۱ ساعت</span></div>
+            <div>حجم: <span>۱۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / ریتمیک</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Hi+Fi+Rush+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Hogwarts Legacy -->
+<div class="game-card" data-name="hogwarts legacy" data-filters="جادویی جهان باز نقش آفرینی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/990080/header.jpg" alt="Hogwarts Legacy" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Hogwarts Legacy</h3>
+        <p class="game-desc">تجربه زندگی در مدرسه علوم و فنون جادوگری هاگوارتز در قرن ۱۹.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۳۰ ساعت</span></div>
+            <div>حجم: <span>۷۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>نقش‌آفرینی / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Hogwarts+Legacy+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Hollow Knight -->
+<div class="game-card" data-name="hollow knight" data-filters="مترویدوانیا دوبعدی سخت">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/367520/header.jpg" alt="Hollow Knight" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Hollow Knight</h3>
+        <p class="game-desc">کاوش در قلمروی حشرات حشرات ویران شده دنیای هالونست.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>۲۷ ساعت</span></div>
+            <div>حجم: <span>۹ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>مترویدوانیا</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Hollow+Knight+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Hollow Knight: Silksong -->
+<div class="game-card" data-name="hollow knight silksong" data-filters="مترویدوانیا دوبعدی سخت">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1030300/header.jpg" alt="Hollow Knight Silksong" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Hollow Knight: Silksong</h3>
+        <p class="game-desc">نسخه جدید دنیای هالو نایت با محوریت شخصیت سریع و چابک هورنت.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>-- ساعت</span></div>
+            <div>حجم: <span>۱۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>مترویدوانیا</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Hollow+Knight+Silksong+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Human: Fall Flat -->
+<div class="game-card" data-name="human fall flat" data-filters="پلتفرمر کمدی کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/477160/header.jpg" alt="Human Fall Flat" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Human: Fall Flat</h3>
+        <p class="game-desc">بازی معمایی مبتنی بر فیزیک خنده‌دار برای حل پازل‌ها به صورت کوآپ.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۶ ساعت</span></div>
+            <div>حجم: <span>۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>پلتفرمر / کمدی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Human+Fall+Flat+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Immortals of Aveum -->
+<div class="game-card" data-name="immortals of aveum" data-filters="شوتر جادویی اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2009100/header.jpg" alt="Immortals of Aveum" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Immortals of Aveum</h3>
+        <p class="game-desc">شوتر اول شخص جادویی پر از انفجارها و طلسم‌های رنگارنگ.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۱۴ ساعت</span></div>
+            <div>حجم: <span>۶۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>شوتر اول‌شخص / جادویی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Immortals+of+Aveum+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Indiana Jones and the Great Circle -->
+<div class="game-card" data-name="indiana jones and the great circle" data-filters="ماجراجویی اکشن داستانی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2677660/header.jpg" alt="Indiana Jones" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Indiana Jones Great Circle</h3>
+        <p class="game-desc">ماجراجویی‌های حماسی ایندیانا جونز در مبارزه با فاشیست‌ها و کشف رازهای باستانی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>-- ساعت</span></div>
+            <div>حجم: <span>۸۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / ماجراجویی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Indiana+Jones+Great+Circle+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Indika -->
+<div class="game-card" data-name="indika" data-filters="داستانی تاریک معمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1373960/header.jpg" alt="Indika" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Indika</h3>
+        <p class="game-desc">روایت عجیب راهبه‌ای جوان با همسفری غیرعادی مثل خود شیطان.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۵ ساعت</span></div>
+            <div>حجم: <span>۴۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ماجراجویی / روان‌شناختی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Indika+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Injustice 2 -->
+<div class="game-card" data-name="injustice 2" data-filters="مبارزه ای ابرقهرمانی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/627270/header.jpg" alt="Injustice 2" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Injustice 2</h3>
+        <p class="game-desc">مبارزات نفس‌گیر ابرقهرمانان و شرورهای جهان DC با سیستم شخصی‌سازی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۶ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>مبارزه‌ای</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Injustice+2+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Inside -->
+<div class="game-card" data-name="inside" data-filters="معمایی تاریک پلتفرمر">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/304430/header.jpg" alt="Inside" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Inside</h3>
+        <p class="game-desc">شاهکاری تاریک و معمایی درباره فرار پسربچه‌ای از پروژه‌ای خبیثانه.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۳.۵ ساعت</span></div>
+            <div>حجم: <span>۳ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>پلتفرمر / معمایی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Inside+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- It Takes Two -->
+<div class="game-card" data-name="it takes two" data-filters="کوآپ پلتفرمر کمدی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1426210/header.jpg" alt="It Takes Two" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">It Takes Two</h3>
+        <p class="game-desc">برنده جایزه بهترین بازی سال؛ تجربه‌ای دو نفره و بی‌نظیر برای آشتی دو زوج.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۱۴ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>پلتفرمر / کوآپ</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=It+Takes+Two+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Jedi: Fallen Order -->
+<div class="game-card" data-name="jedi fallen order star wars" data-filters="اکشن ماجراجویی جنگ ستارگان">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1172380/header.jpg" alt="Jedi Fallen Order" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Star Wars Jedi: Fallen Order</h3>
+        <p class="game-desc">تلاش یک پادوان جوان برای احیای فرقه جدای‌ها از دست امپراطوری.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۱۷ ساعت</span></div>
+            <div>حجم: <span>۵۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / ماجراجویی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Jedi+Fallen+Order+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Jedi: Survivor -->
+<div class="game-card" data-name="jedi survivor star wars" data-filters="اکشن ماجراجویی جنگ ستارگان">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1774580/header.jpg" alt="Jedi Survivor" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Star Wars Jedi: Survivor</h3>
+        <p class="game-desc">ادامه‌ی ماجراهای کال کستیس و نبردش علیه نیروهای تاریک کهکشان.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۱۹ ساعت</span></div>
+            <div>حجم: <span>۱۳۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / ماجراجویی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Jedi+Survivor+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Jurassic World Evolution 2 -->
+<div class="game-card" data-name="jurassic world evolution 2" data-filters="شبیه ساز مدیریتی استراتژیک">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1244460/header.jpg" alt="Jurassic World Evolution 2" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Jurassic World Evolution 2</h3>
+        <p class="game-desc">ساخت و مدیریت پارک دیپناسورها با گرافیک بی‌نظیر و جزییات خیره‌کننده.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۱۴ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>استراتژیک / مدیریتی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Jurassic+World+Evolution+2+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Just Cause 4 -->
+<div class="game-card" data-name="just cause 4" data-filters="اکشن هیجان انگیز جهان باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/518790/header.jpg" alt="Just Cause 4" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Just Cause 4</h3>
+        <p class="game-desc">ایجاد انفجارهای عظیم، چتربازی و پرواز در میان گردبادهای ویرانگر.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۶ ساعت</span></div>
+            <div>حجم: <span>۵۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Just+Cause+4+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Killer Instinct -->
+<div class="game-card" data-name="killer instinct" data-filters="مبارزه ای اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/570010/header.jpg" alt="Killer Instinct" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Killer Instinct</h3>
+        <p class="game-desc">بازی مبارزه‌ای بسیار سریع با سیستم کمبوهای نفس‌گیر و هیجان انگیز.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۴ ساعت</span></div>
+            <div>حجم: <span>۴۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>مبارزه‌ای</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Killer+Instinct+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Kingdom Come: Deliverance II -->
+<div class="game-card" data-name="kingdom come deliverance ii 2" data-filters="نقش آفرینی تاریخی جهان باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1771300/header.jpg" alt="Kingdom Come Deliverance II" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Kingdom Come: Deliverance II</h3>
+        <p class="game-desc">شبیه‌ساز واقعی زندگی قرون وسطایی در اروپا با شمشیرزنی واقعی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>-- ساعت</span></div>
+            <div>حجم: <span>۷۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>نقش‌آفرینی تاریخی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Kingdom+Come+Deliverance+2+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- LEGO Batman 3: Beyond Gotham -->
+<div class="game-card" data-name="lego batman 3 beyond gotham" data-filters="لگو پلتفرمر ابرقهرمانی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/313690/header.jpg" alt="LEGO Batman 3" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">LEGO Batman 3: Beyond Gotham</h3>
+        <p class="game-desc">همکاری بتمن و دیگر قهرمانان لگویی DC برای نجات فضا از دست برینیاک.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>۹ ساعت</span></div>
+            <div>حجم: <span>۸ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>لگو / ماجراجویی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=LEGO+Batman+3+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- LEGO City Undercover -->
+<div class="game-card" data-name="lego city undercover" data-filters="لگو جهان باز کمدی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/358040/header.jpg" alt="LEGO City Undercover" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">LEGO City Undercover</h3>
+        <p class="game-desc">در نقش چیس مک‌کین مخفیانه وارد جرم و جنایت‌های لگو سیتی شوید.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۱۸ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>لگو / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=LEGO+City+Undercover+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- LEGO DC Super-Villains -->
+<div class="game-card" data-name="lego dc super villains" data-filters="لگو ابرقهرمانی کمدی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/829110/header.jpg" alt="LEGO DC Super-Villains" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">LEGO DC Super-Villains</h3>
+        <p class="game-desc">برای اولین بار در نقش ابرشرورهای جهان لگویی DC بازی کنید!</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>۱۰ ساعت</span></div>
+            <div>حجم: <span>۱۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>لگو / ماجراجویی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=LEGO+DC+Super+Villains+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- LEGO Marvel Super Heroes -->
+<div class="game-card" data-name="lego marvel super heroes" data-filters="لگو ابرقهرمانی مارول">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/249130/header.jpg" alt="LEGO Marvel Super Heroes" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">LEGO Marvel Super Heroes</h3>
+        <p class="game-desc">جمع شدن قهرمانان مارول مانند اسپایدرمن و مرد آهنی در دنیای لگو.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>۱۲ ساعت</span></div>
+            <div>حجم: <span>۷ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>لگو / ابرقهرمانی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=LEGO+Marvel+Super+Heroes+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- LEGO Marvel Super Heroes 2 -->
+<div class="game-card" data-name="lego marvel super heroes 2" data-filters="لگو ابرقهرمانی مارول">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/647830/header.jpg" alt="LEGO Marvel Super Heroes 2" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">LEGO Marvel Super Heroes 2</h3>
+        <p class="game-desc">نبرد با کانگ فاتح در طول زمان و مکان‌های مختلف دنیای مارول.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>۱۴ ساعت</span></div>
+            <div>حجم: <span>۲۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>لگو / ابرقهرمانی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=LEGO+Marvel+Super+Heroes+2+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- LEGO Marvel's Avengers -->
+<div class="game-card" data-name="lego marvels avengers" data-filters="لگو ابرقهرمانی مارول">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/438640/header.jpg" alt="LEGO Marvels Avengers" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">LEGO Marvel's Avengers</h3>
+        <p class="game-desc">بازسازی داستان فیلم‌های انتقام‌جویان در قالبی کمدی و لگویی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>۱۰ ساعت</span></div>
+            <div>حجم: <span>۱۴ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>لگو / ابرقهرمانی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=LEGO+Marvels+Avengers+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- LEGO Star Wars: The Skywalker Saga -->
+<div class="game-card" data-name="lego star wars the skywalker saga" data-filters="لگو جنگ ستارگان جهان باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/920210/header.jpg" alt="LEGO Skywalker Saga" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">LEGO Star Wars: Skywalker Saga</h3>
+        <p class="game-desc">تجربه کامل تمامی ۹ فیلم حماسه اسکای‌واکر با سبک مدرن لگو.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>۱۸ ساعت</span></div>
+            <div>حجم: <span>۴۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>لگو / ماجراجویی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=LEGO+Skywalker+Saga+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- LEGO The Incredibles -->
+<div class="game-card" data-name="lego the incredibles" data-filters="لگو انیمیشن کمدی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/818320/header.jpg" alt="LEGO The Incredibles" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">LEGO The Incredibles</h3>
+        <p class="game-desc">ماجراجویی با خانواده شگفت‌انگیزان در قالبی جذاب و لگویی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>۹ ساعت</span></div>
+            <div>حجم: <span>۱۲ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>لگو / ماجراجویی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=LEGO+The+Incredibles+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- LEGO Worlds -->
+<div class="game-card" data-name="lego worlds" data-filters="لگو ساخت و ساز جهان باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/332310/header.jpg" alt="LEGO Worlds" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">LEGO Worlds</h3>
+        <p class="game-desc">جهانی ساخته شده از قطعات لگو که می‌توانید تمام آن را تغییر دهید.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>خلاقانه</span></div>
+            <div>حجم: <span>۱۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>لگو / ساخت‌وساز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=LEGO+Worlds+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Lies of P -->
+<div class="game-card" data-name="lies of p" data-filters="سولزلايک سخت تاریک">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1627720/header.jpg" alt="Lies of P" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Lies of P</h3>
+        <p class="game-desc">بازآفرینی تاریک داستان پینوکیو در قالبی سولزلاپک و بسیار چالش‌برانگیز.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۳۰ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>سولزلاپک / اکشن</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Lies+of+P+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Limbo -->
+<div class="game-card" data-name="limbo" data-filters="تاریک معمایی پلتفرمر">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/48000/header.jpg" alt="Limbo" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Limbo</h3>
+        <p class="game-desc">شاهکاری سیاه و سفید و مرموز درباره پسری که در جستجوی خواهرش است.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۳.۵ ساعت</span></div>
+            <div>حجم: <span>۱ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>پلتفرمر / معمایی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Limbo+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Little Nightmares -->
+<div class="game-card" data-name="little nightmares" data-filters="ترسناک معمایی پلتفرمر">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/424840/header.jpg" alt="Little Nightmares" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Little Nightmares</h3>
+        <p class="game-desc">کمک به دخترکی با بارانی زرد برای فرار از کشتی کابوس‌وار Maw.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۳.۵ ساعت</span></div>
+            <div>حجم: <span>۱۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ترسناک / پلتفرمر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Little+Nightmares+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Little Nightmares II -->
+<div class="game-card" data-name="little nightmares ii 2" data-filters="ترسناک معمایی پلتفرمر">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/860510/header.jpg" alt="Little Nightmares II" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Little Nightmares II</h3>
+        <p class="game-desc">فرار مونو و سیکس از دنیایی تحریف شده توسط امواج برج سیگنال.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۵.۵ ساعت</span></div>
+            <div>حجم: <span>۱۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ترسناک / پلتفرمر</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Little+Nightmares+2+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Lords of the Fallen -->
+<div class="game-card" data-name="lords of the fallen" data-filters="سولزلايک فانتزی سخت">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1501750/header.jpg" alt="Lords of the Fallen" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Lords of the Fallen</h3>
+        <p class="game-desc">سفر بین دو دنیای موازای زندگان و مردگان در یک بازی سولزلاپک جذاب.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۲۸ ساعت</span></div>
+            <div>حجم: <span>۴۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>سولزلاپک / نقش‌آفرینی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Lords+of+the+Fallen+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Mad Max -->
+<div class="game-card" data-name="mad max" data-filters="اکشن جهان باز پسارستاخیزی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/234140/header.jpg" alt="Mad Max" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Mad Max</h3>
+        <p class="game-desc">نبردهای ماشینی خونین و تلاش برای بقا در بیابان‌های خشک و بی‌رحم.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۲۰ ساعت</span></div>
+            <div>حجم: <span>۳۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Mad+Max+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Mafia: Definitive Edition -->
+<div class="game-card" data-name="mafia definitive edition" data-filters="اکشن داستانی گانگستری">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1030840/header.jpg" alt="Mafia Definitive Edition" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Mafia: Definitive Edition</h3>
+        <p class="game-desc">بازسازی کامل و فوق‌العاده داستان تامی آنجلو و ورود او به مافیا.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۰ ساعت</span></div>
+            <div>حجم: <span>۴۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / داستانی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Mafia+Definitive+Edition+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Mafia II: Definitive Edition -->
+<div class="game-card" data-name="mafia ii definitive edition mafia 2" data-filters="اکشن داستانی گانگستری">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1030830/header.jpg" alt="Mafia II Definitive Edition" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Mafia II: Definitive Edition</h3>
+        <p class="game-desc">داستان ویتو اسکالتا و تلاش برای کسب قدرت در سازمان مافیایی دهه ۵۰.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۲ ساعت</span></div>
+            <div>حجم: <span>۴۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / داستانی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Mafia+2+Definitive+Edition+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Mafia III: Definitive Edition -->
+<div class="game-card" data-name="mafia iii definitive edition mafia 3" data-filters="اکشن جهان باز گانگستری">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/360430/header.jpg" alt="Mafia III Definitive Edition" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Mafia III: Definitive Edition</h3>
+        <p class="game-desc">انتقام لینکلن کلی از مافیای ایتالیایی در شهر نیوبوردو.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۸ ساعت</span></div>
+            <div>حجم: <span>۶۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Mafia+3+Definitive+Edition+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Mafia: The Old Country -->
+<div class="game-card" data-name="mafia the old country" data-filters="اکشن داستانی گانگستری">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1030840/header.jpg" alt="Mafia The Old Country" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Mafia: The Old Country</h3>
+        <p class="game-desc">روایت ریشه‌های شکل‌گیری مافیا در سیسیل ایتالیای اوایل قرن بیستم.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>-- ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / داستانی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Mafia+The+Old+Country+Trailer" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Marvel's Guardians of the Galaxy -->
+<div class="game-card" data-name="marvels guardians of the galaxy" data-filters="ابرقهرمانی اکشن کمدی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1088710/header.jpg" alt="Guardians of the Galaxy" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Guardians of the Galaxy</h3>
+        <p class="game-desc">هدایت نگهبانان کهکشان در یک ماجراجویی داستانی و بسیار خنده‌دار.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+16</span></div>
+            <div>زمان: <span>۱۷ ساعت</span></div>
+            <div>حجم: <span>۸۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / ماجراجویی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Guardians+of+the+Galaxy+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Mass Effect -->
+<div class="game-card" data-name="mass effect" data-filters="نقش آفرینی علمی تخیلی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1328670/header.jpg" alt="Mass Effect" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Mass Effect</h3>
+        <p class="game-desc">سرآغاز حماسه کاپیتان شپرد و نجات کهکشان از تهدید رپیرها.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۷ ساعت</span></div>
+            <div>حجم: <span>۱۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>نقش‌آفرینی / علمی‌تخیلی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Mass+Effect+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Mass Effect Legendary Edition -->
+<div class="game-card" data-name="mass effect legendary edition" data-filters="نقش آفرینی علمی تخیلی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1328670/header.jpg" alt="Mass Effect Legendary Edition" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Mass Effect Legendary Edition</h3>
+        <p class="game-desc">نسخه بازسازی‌شده شامل هر سه نسخه سه‌گانه حماسی ماس افکت.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۶۰ ساعت</span></div>
+            <div>حجم: <span>۱۰۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>نقش‌آفرینی / علمی‌تخیلی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Mass+Effect+Legendary+Edition+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Max: The Curse of Brotherhood -->
+<div class="game-card" data-name="max the curse of brotherhood" data-filters="پلتفرمر معمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/255390/header.jpg" alt="Max The Curse of Brotherhood" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Max: Curse of Brotherhood</h3>
+        <p class="game-desc">استفاده از یک ماژیک جادویی برای نجات برادر کوچکتر از دنیای هیولاها.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۶ ساعت</span></div>
+            <div>حجم: <span>۴ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>پلتفرمر / معمایی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Max+The+Curse+of+Brotherhood+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- The Medium -->
+<div class="game-card" data-name="the medium" data-filters="ترسناک روان شناختی معمایی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1293160/header.jpg" alt="The Medium" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">The Medium</h3>
+        <p class="game-desc">حل معماها به‌طور همزمان در دو دنیای واقعی و روح‌ها توسط یک واسطه جادوگر.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۸ ساعت</span></div>
+            <div>حجم: <span>۵۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ترسناک روان‌شناختی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=The+Medium+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Metal Gear Solid Delta: Snake Eater -->
+<div class="game-card" data-name="metal gear solid delta snake eater mgs delta" data-filters="مخفی کاری اکشن داستانی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2417610/header.jpg" alt="MGS Delta" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">MGS Delta: Snake Eater</h3>
+        <p class="game-desc">بازسازی نسل جدید شاهکار متال گیر اسنیک ایتر در جنگل‌های روسیه.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۶ ساعت</span></div>
+            <div>حجم: <span>۶۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>مخفی‌کاری / اکشن</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Metal+Gear+Solid+Delta+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Metal Gear Solid V: The Phantom Pain -->
+<div class="game-card" data-name="metal gear solid v the phantom pain mgsv mgs 5" data-filters="مخفی کاری جهان باز اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/287700/header.jpg" alt="MGS V The Phantom Pain" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">MGS V: The Phantom Pain</h3>
+        <p class="game-desc">شاهکار آزادی عمل در مخفی‌کاری جهان‌باز و رهبری مادر بیس توسط ونوم اسنیک.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۴۵ ساعت</span></div>
+            <div>حجم: <span>۳۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>مخفی‌کاری / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=MGS+V+The+Phantom+Pain+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Metro 2033 Redux -->
+<div class="game-card" data-name="metro 2033 redux" data-filters="شوتر ترسناک پسارستاخیزی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/286690/header.jpg" alt="Metro 2033 Redux" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Metro 2033 Redux</h3>
+        <p class="game-desc">تلاش برای بقا در تونل‌های متروی مسکو پس از جنگ هسته‌ای.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۹ ساعت</span></div>
+            <div>حجم: <span>۱۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>شوتر / ترسناک</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Metro+2033+Redux+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Metro Exodus -->
+<div class="game-card" data-name="metro exodus" data-filters="شوتر بقا پسارستاخیزی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/412020/header.jpg" alt="Metro Exodus" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Metro Exodus</h3>
+        <p class="game-desc">سفر با قطار آرتم در طول روسیه ویران‌شده برای یافتن زندگی جدید.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۷۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>شوتر / بقا</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Metro+Exodus+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Metro: Last Light Redux -->
+<div class="game-card" data-name="metro last light redux" data-filters="شوتر ترسناک پسارستاخیزی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/287390/header.jpg" alt="Metro Last Light Redux" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Metro: Last Light Redux</h3>
+        <p class="game-desc">ادامه‌ی ماجراهای آرتم و نبرد داخلی گروه‌های مختلف مترو.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۰ ساعت</span></div>
+            <div>حجم: <span>۱۳ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>شوتر / ترسناک</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Metro+Last+Light+Redux+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Middle-earth: Shadow of War -->
+<div class="game-card" data-name="middle earth shadow of war" data-filters="اکشن نقش آفرینی جهان باز ارباب حلقه ها">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/356190/header.jpg" alt="Middle-earth Shadow of War" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Middle-earth: Shadow of War</h3>
+        <p class="game-desc">ساخت ارتش ارک‌ها و نبرد علیه سائورون با سیستم جذاب نمسیس.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۲۰ ساعت</span></div>
+            <div>حجم: <span>۹۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>نقش‌آفرینی / جهان‌باز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Shadow+of+War+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Minecraft -->
+<div class="game-card" data-name="minecraft" data-filters="بقا ساخت و ساز جهان باز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1672970/header.jpg" alt="Minecraft" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Minecraft</h3>
+        <p class="game-desc">جهانی بی‌نهایت پیکسلی برای خلق، اکتشاف و بقا با دوستان.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>بی‌پایان</span></div>
+            <div>حجم: <span>۲ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ساخت‌وساز / بقا</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Minecraft+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Minecraft Dungeons -->
+<div class="game-card" data-name="minecraft dungeons" data-filters="اکشن نقش آفرینی کوآپ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1672970/header.jpg" alt="Minecraft Dungeons" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Minecraft Dungeons</h3>
+        <p class="game-desc">ماجراجویی در سیاه‌چال‌ها با سبک مبارزاتی اکشن در دنیای ماینکرفت.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>۹ ساعت</span></div>
+            <div>حجم: <span>۶ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / نقش‌آفرینی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Minecraft+Dungeons+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Minecraft Legends -->
+<div class="game-card" data-name="minecraft legends" data-filters="استراتژیک اکشن">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1928980/header.jpg" alt="Minecraft Legends" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Minecraft Legends</h3>
+        <p class="game-desc">رهبری ارتش برای دفاع از دنیای ماینکرفت در برابر هجوم پیگلین‌ها.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>۱۰ ساعت</span></div>
+            <div>حجم: <span>۱۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>استراتژیک / اکشن</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Minecraft+Legends+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Mortal Kombat 1 -->
+<div class="game-card" data-name="mortal kombat 1 mk1" data-filters="مبارزه ای خونین">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/header.jpg" alt="Mortal Kombat 1" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Mortal Kombat 1</h3>
+        <p class="game-desc">بازسازی دنیای مورتال کمبت توسط لو کنگ با سیستم مبارزان کمکی (Kameo).</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۶ ساعت</span></div>
+            <div>حجم: <span>۱۰۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>مبارزه‌ای</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Mortal+Kombat+1+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Mortal Kombat 11 -->
+<div class="game-card" data-name="mortal kombat 11 mk11" data-filters="مبارزه ای خونین">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/976310/header.jpg" alt="Mortal Kombat 11" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Mortal Kombat 11</h3>
+        <p class="game-desc">نبرد دستکاری زمان با گرونیکا و فیتالیتی‌های حماسی و شگفت‌انگیز.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۶ ساعت</span></div>
+            <div>حجم: <span>۸۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>مبارزه‌ای</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Mortal+Kombat+11+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Mortal Kombat X -->
+<div class="game-card" data-name="mortal kombat x mkx" data-filters="مبارزه ای خونین">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/307780/header.jpg" alt="Mortal Kombat X" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Mortal Kombat X</h3>
+        <p class="game-desc">ورود نسل جدید مبارزان و انتخاب ۳ استایل متغیر برای هر کاراکتر.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۵ ساعت</span></div>
+            <div>حجم: <span>۴۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>مبارزه‌ای</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Mortal+Kombat+X+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- MotoGP 24 -->
+<div class="game-card" data-name="motogp 24" data-filters="مسابقه ای موتور سواری شبیه ساز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2581700/header.jpg" alt="MotoGP 24" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">MotoGP 24</h3>
+        <p class="game-desc">شبیه‌ساز رسمی مسابقات موتورسواری گرندپری فصل ۲۰۲۴ با فیزیک واقع‌گرایانه.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۲۰ ساعت</span></div>
+            <div>حجم: <span>۲۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ریسینگ / شبیه‌ساز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=MotoGP+24+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Need for Speed Rivals -->
+<div class="game-card" data-name="need for speed rivals nfs rivals" data-filters="مسابقه ای ریسینگ پلیس">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1262600/header.jpg" alt="Need for Speed Rivals" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">NFS Rivals</h3>
+        <p class="game-desc">رقابت بی‌رحمانه بین رانندگان خیابانی و نیروهای پلیس در جاده‌های باز.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۱۴ ساعت</span></div>
+            <div>حجم: <span>۱۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ریسینگ / اکشن</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=NFS+Rivals+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Need for Speed Heat -->
+<div class="game-card" data-name="need for speed heat nfs heat" data-filters="مسابقه ای ریسینگ اسپرت">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1222680/header.jpg" alt="Need for Speed Heat" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">NFS Heat</h3>
+        <p class="game-desc">مسابقات قانونی در روز و تعقیب و گریزهای هیجان‌انگیز غیرقانونی در شب.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۱۳ ساعت</span></div>
+            <div>حجم: <span>۳۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ریسینگ / هیجان‌انگیز</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=NFS+Heat+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Need for Speed Hot Pursuit Remastered -->
+<div class="game-card" data-name="need for speed hot pursuit remastered nfs hot pursuit" data-filters="مسابقه ای ریسینگ هیجان انگیز">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1328660/header.jpg" alt="NFS Hot Pursuit Remastered" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">NFS Hot Pursuit Remastered</h3>
+        <p class="game-desc">بازسازی فوق‌العاده تعقیب و گریزهای دیوانه‌وار پلیس و ماشین‌های سوپراسپرت.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>۱۵ ساعت</span></div>
+            <div>حجم: <span>۳۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ریسینگ</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=NFS+Hot+Pursuit+Remastered+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Need for Speed Payback -->
+<div class="game-card" data-name="need for speed payback nfs payback" data-filters="مسابقه ای ریسینگ داستانی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1262580/header.jpg" alt="Need for Speed Payback" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">NFS Payback</h3>
+        <p class="game-desc">داستان انتقام یک گروه راننده از کارتل شرط‌بندی شهر Fortune Valley.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۱۷ ساعت</span></div>
+            <div>حجم: <span>۳۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ریسینگ / اکشن</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=NFS+Payback+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Need for Speed Unbound -->
+<div class="game-card" data-name="need for speed unbound nfs unbound" data-filters="مسابقه ای ریسینگ انیمه">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1846380/header.jpg" alt="Need for Speed Unbound" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">NFS Unbound</h3>
+        <p class="game-desc">ترکیب سبک گرافیکی انیمه و گرافیک واقع‌گرایانه با تیونینگ بی‌نهایت.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+12</span></div>
+            <div>زمان: <span>۲۰ ساعت</span></div>
+            <div>حجم: <span>۳۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>ریسینگ</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=NFS+Unbound+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Nickelodeon All-Star Brawl 2 -->
+<div class="game-card" data-name="nickelodeon all star brawl 2" data-filters="مبارزه ای کمدی کارتونی">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2153620/header.jpg" alt="Nickelodeon All-Star Brawl 2" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Nickelodeon All-Star Brawl 2</h3>
+        <p class="game-desc">مبارزه شخصیت‌های محبوب نیکلودئون مانند باب‌اسفنجی و لاک‌پشت‌های نینجا.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+7</span></div>
+            <div>زمان: <span>۶ ساعت</span></div>
+            <div>حجم: <span>۱۵ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>مبارزه‌ای / کارتونی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Nickelodeon+All+Star+Brawl+2+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Nickelodeon Kart Racers 3: Slime Speedway -->
+<div class="game-card" data-name="nickelodeon kart racers 3 slime speedway" data-filters="مسابقه ای کارتونی کارتینگ">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2088850/header.jpg" alt="Nickelodeon Kart Racers 3" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Nickelodeon Kart Racers 3</h3>
+        <p class="game-desc">مسابقات کارتینگ هیجان‌انگیز و خنده‌دار با کاراکترهای کارتونی.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+3</span></div>
+            <div>زمان: <span>۸ ساعت</span></div>
+            <div>حجم: <span>۱۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>کارتینگ / خانوادگی</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Nickelodeon+Kart+Racers+3+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Ninja Gaiden Black -->
+<div class="game-card" data-name="ninja gaiden black" data-filters="اکشن نینجایی سخت هک اند اسلش">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1580780/header.jpg" alt="Ninja Gaiden Black" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Ninja Gaiden Black</h3>
+        <p class="game-desc">یکی از سخت‌ترین و برترین بازی‌های اکشن نینجایی تاریخ در نقش ریو هایابوسا.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۴ ساعت</span></div>
+            <div>حجم: <span>۶ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / هک اند اسلش</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Ninja+Gaiden+Black+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Ninja Gaiden 3: Razor's Edge -->
+<div class="game-card" data-name="ninja gaiden 3 razors edge" data-filters="اکشن نینجایی سریع خونین">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1580800/header.jpg" alt="Ninja Gaiden 3 Razors Edge" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Ninja Gaiden 3: Razor's Edge</h3>
+        <p class="game-desc">نبرد سریع و خونین ریو هایابوسا با شمشیر اژدها علیه نفرین کاتانا.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۸ ساعت</span></div>
+            <div>حجم: <span>۱۰ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / هک اند اسلش</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Ninja+Gaiden+3+Razors+Edge+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+<!-- Ninja Gaiden Sigma -->
+<div class="game-card" data-name="ninja gaiden sigma" data-filters="اکشن نینجایی هک اند اسلش">
+    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1580780/header.jpg" alt="Ninja Gaiden Sigma" class="game-cover">
+    <div class="game-content">
+        <h3 class="game-title">Ninja Gaiden Sigma</h3>
+        <p class="game-desc">نسخه بهبودیافته و کلاسیک نینجا گایدن به همراه مراحل اختصاصی راشل.</p>
+        <div class="game-details">
+            <div>رده سنی: <span>+18</span></div>
+            <div>زمان: <span>۱۴ ساعت</span></div>
+            <div>حجم: <span>۱۲ گیگ</span></div>
+            <div class="genre-item">ژانر: <span>اکشن / هک اند اسلش</span></div>
+        </div>
+        <a href="https://www.youtube.com/results?search_query=Ninja+Gaiden+Sigma+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+    </div>
+</div>
+
+            <!-- The Witcher 3 Wild Hunt -->
+            <div class="game-card" data-name="the witcher 3 wild hunt" data-filters="رول‌پلی جهان‌باز">
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/292030/header.jpg" alt="Witcher 3" class="game-cover">
+                <div class="game-content">
+                    <h3 class="game-title">The Witcher 3: Wild Hunt</h3>
+                    <p class="game-desc">ماجراجویی حماسی گرالت ریویا برای یافتن سیری در دنیایی پهناور.</p>
+                    <div class="game-details">
+                        <div>رده سنی: <span>+18</span></div>
+                        <div>زمان: <span>۵۵ ساعت</span></div>
+                        <div>حجم: <span>۵۰ گیگ</span></div>
+                        <div class="genre-item">ژانر: <span>جهان‌باز / RPG</span></div>
+                    </div>
+                    <a href="https://www.youtube.com/results?search_query=The+Witcher+3+Xbox+Gameplay" target="_blank" class="trailer-btn">تماشای تریلر</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let selectedFilters = [];
+
+        // مدیریت انتخاب کلیدهای شیشه‌ای فیلتر
+        function toggleFilter(button) {
+            const filterValue = button.getAttribute('data-filter');
+            
+            if (button.classList.contains('active')) {
+                button.classList.remove('active');
+                selectedFilters = selectedFilters.filter(f => f !== filterValue);
+            } else {
+                if (selectedFilters.length >= 4) {
+                    alert('حداکثر می‌توانید ۴ مورد را به صورت هم‌زمان انتخاب کنید.');
+                    return;
+                }
+                button.classList.add('active');
+                selectedFilters.push(filterValue);
+            }
+            
+            // به‌روزرسانی شمارنده تعداد انتخاب‌ها
+            document.getElementById('filter-counter').innerText = `انتخاب‌شده: ${selectedFilters.length}`;
+            
+            // اجرای هم‌زمان فیلتر
+            filterCatalog();
+        }
+
+        // تابع جامع فیلتر (ترکیب جستجوی متنی و کلیدهای شیشه‌ای)
+        function filterCatalog() {
+            let searchInput = document.getElementById('searchBox').value.toLowerCase().trim();
+            let cards = document.getElementsByClassName('game-card');
+            
+            for (let i = 0; i < cards.length; i++) {
+                let card = cards[i];
+                let name = card.getAttribute('data-name');
+                let cardFilters = card.getAttribute('data-filters') ? card.getAttribute('data-filters').split(' ') : [];
+                
+                // شرط ۱: تطابق با متن جستجو شده
+                let matchesSearch = name.indexOf(searchInput) > -1;
+                
+                // شرط ۲: تطابق با فیلترهای انتخاب شده
+                let matchesFilter = true;
+                if (selectedFilters.length > 0) {
+                    matchesFilter = selectedFilters.some(filter => cardFilters.includes(filter));
+                }
+                
+                // نمایش یا عدم نمایش کارت
+                if (matchesSearch && matchesFilter) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
